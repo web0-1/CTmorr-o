@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CT Morirão | Equipe Leandro Vilar - Jiu-Jitsu em Itaguaí/RJ</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -31,6 +28,9 @@
                     fontFamily: {
                         heading: ['Montserrat', 'sans-serif'],
                         body: ['Inter', 'sans-serif']
+                    },
+                    screens: {
+                        'xs': '420px'
                     }
                 }
             }
@@ -58,14 +58,13 @@
             -webkit-text-fill-color: transparent;
         }
         .bg-gradient-hero {
-            background: linear-gradient(to bottom, rgba(9, 9, 11, 0.82), rgba(9, 9, 11, 0.96)), url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            background: linear-gradient(to bottom, rgba(9, 9, 11, 0.78), rgba(9, 9, 11, 0.94)), url('fundo.jpg') center/cover no-repeat;
         }
         .badge-glow {
             box-shadow: 0 0 30px rgba(220, 38, 38, 0.35);
             animation: pulse-glow 3s infinite ease-in-out;
         }
 
-        /* Keyframes */
         @keyframes pulse-glow {
             0%, 100% {
                 box-shadow: 0 0 25px rgba(220, 38, 38, 0.35);
@@ -86,7 +85,6 @@
             animation: float 4s ease-in-out infinite;
         }
 
-        /* Shimmer Effect for CTA Buttons */
         .btn-shine {
             position: relative;
             overflow: hidden;
@@ -115,7 +113,6 @@
             100% { transform: translateX(100%) rotate(30deg); }
         }
 
-        /* Cards Hover Effects */
         .card-interactive {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -125,7 +122,6 @@
             border-color: rgba(220, 38, 38, 0.6);
         }
 
-        /* Scroll Reveal Animations */
         .reveal {
             opacity: 0;
             transform: translateY(35px);
@@ -161,7 +157,6 @@
         .delay-300 { transition-delay: 300ms; }
         .delay-400 { transition-delay: 400ms; }
 
-        /* Accordion CSS */
         .faq-answer {
             max-height: 0;
             overflow: hidden;
@@ -172,6 +167,15 @@
             max-height: 200px;
             opacity: 1;
         }
+
+        /* Garantia de exibição da foto do herói no mobile */
+        @media (max-width: 1023px) {
+            .reveal-scale {
+                opacity: 1 !important;
+                transform: scale(1) !important;
+                transition: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-brand-black text-gray-200 antialiased selection:bg-brand-red selection:text-white">
@@ -179,7 +183,6 @@
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-brand-black/80 backdrop-blur-md border-b border-gray-900 transition-all duration-500 py-3">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
-                <!-- Brand Logo (logo.png with fallback UI icon) -->
                 <a href="#" class="flex items-center gap-3 group">
                     <div class="w-12 h-12 rounded-full border-2 border-brand-red bg-black flex items-center justify-center overflow-hidden shadow-lg group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300">
                         <img src="logo.png" alt="Logo Equipe Leandro Vilar" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -194,7 +197,6 @@
                     </div>
                 </a>
 
-                <!-- Desktop Nav Navigation -->
                 <nav class="hidden lg:flex items-center gap-7">
                     <a href="#sobre" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Sobre</a>
                     <a href="#professor" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Mestre Vilar</a>
@@ -205,22 +207,19 @@
                     <a href="#localizacao" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Contato</a>
                 </nav>
 
-                <!-- Header CTA Button -->
                 <div class="hidden md:flex items-center">
-                    <a href="https://wa.me/5521999999999?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20no%20CT%20Morr%C3%A3o!" target="_blank" rel="noopener noreferrer" class="btn-shine bg-gradient-to-r from-brand-red to-brand-darkRed hover:from-red-600 hover:to-red-800 text-white font-bold px-5 py-2.5 rounded-full text-sm shadow-lg shadow-red-900/40 hover:shadow-red-900/70 hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                    <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20no%20CT%20Morr%C3%A3o!" target="_blank" rel="noopener noreferrer" class="btn-shine bg-gradient-to-r from-brand-red to-brand-darkRed hover:from-red-600 hover:to-red-800 text-white font-bold px-5 py-2.5 rounded-full text-sm shadow-lg shadow-red-900/40 hover:shadow-red-900/70 hover:scale-105 transition-all duration-300 flex items-center gap-2">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
                         <span>Aula Experimental</span>
                     </a>
                 </div>
 
-                <!-- Mobile menu button -->
                 <button id="mobile-menu-btn" class="lg:hidden text-gray-300 hover:text-white focus:outline-none p-2 active:scale-95 transition-transform" aria-label="Menu">
                     <i class="fa-solid fa-bars text-2xl" id="menu-icon"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Animated Mobile Navigation -->
         <div id="mobile-menu" class="hidden lg:hidden bg-brand-darkGray/95 backdrop-blur-xl border-b border-gray-800 px-6 pt-4 pb-6 space-y-3 transition-all duration-300 origin-top opacity-0 -translate-y-4">
             <a href="#sobre" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Sobre</a>
             <a href="#professor" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Mestre Vilar</a>
@@ -229,81 +228,129 @@
             <a href="#beneficios" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Benefícios</a>
             <a href="#depoimentos" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Depoimentos</a>
             <a href="#localizacao" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Localização & Contato</a>
-            <a href="https://wa.me/5521999999999?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20no%20CT%20Morr%C3%A3o!" target="_blank" class="btn-shine block w-full text-center bg-brand-red hover:bg-red-700 text-white font-bold py-3 rounded-xl mt-4 shadow-lg shadow-red-900/50">
+            <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20no%20CT%20Morr%C3%A3o!" target="_blank" class="btn-shine block w-full text-center bg-brand-red hover:bg-red-700 text-white font-bold py-3 rounded-xl mt-4 shadow-lg shadow-red-900/50">
                 <i class="fa-brands fa-whatsapp mr-2 text-lg"></i> Agendar Aula Gratuita
             </a>
         </div>
     </header>
 
-    <section class="relative min-h-screen flex items-center pt-28 pb-20 bg-gradient-hero">
+    <section class="relative min-h-screen flex items-center pt-24 pb-10 sm:pt-28 sm:pb-20 bg-gradient-hero">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
                 
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <!-- Badge -->
+                <!-- FOTO DO HERÓI (aparece primeiro no mobile) -->
+                <div class="reveal-scale delay-200 lg:col-span-5 flex justify-center order-1 lg:order-2">
+                    <div class="relative w-full max-w-[240px] xs:max-w-[280px] sm:max-w-sm">
+                        
+                        <div class="relative rounded-3xl overflow-hidden border-2 border-brand-red/40 shadow-2xl aspect-[4/5] group hover:border-brand-red/80 transition-all duration-500">
+                            
+                            <img src="vilar1.jpeg" 
+                                 alt="Jiu-Jitsu CT Morrão" 
+                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                 onerror="this.src='https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80';">
+                            
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                            
+                            <div class="absolute top-4 right-4 w-16 h-16 rounded-full border-2 border-brand-red bg-black/90 backdrop-blur-md p-2 flex items-center justify-center shadow-xl group-hover:rotate-12 transition-transform duration-500">
+                                <img src="logo.png" alt="Logo CT Morrão" class="w-full h-full object-contain" 
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span class="hidden font-black text-brand-red text-lg">LV</span>
+                            </div>
+                            
+                            <div class="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-brand-red/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg">
+                                <i class="fa-solid fa-trophy"></i>
+                                <span>Forjando Campeões</span>
+                            </div>
+                            
+                            <div class="absolute bottom-0 left-0 right-0 p-5 sm:p-6 space-y-3">
+                                
+                                <h3 class="font-heading text-3xl sm:text-4xl font-black text-white uppercase leading-none tracking-tight">
+                                    CT <span class="text-gradient-red">Morrão</span>
+                                </h3>
+                                
+                                <p class="text-[10px] sm:text-[11px] font-bold text-gray-300 tracking-[0.2em] uppercase">
+                                    Equipe Leandro Vilar
+                                </p>
+                                
+                                <div class="w-full h-px bg-gradient-to-r from-brand-red via-brand-red/50 to-transparent"></div>
+                                
+                                <div class="flex items-center gap-3 pt-1">
+                                    <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-300">
+                                        <i class="fa-solid fa-location-dot text-brand-red"></i>
+                                        <span>Itaguaí - RJ</span>
+                                    </div>
+                                    <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+                                    <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-300">
+                                        <i class="fa-solid fa-hand-fist text-brand-gold"></i>
+                                        <span>Jiu-Jitsu</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute -bottom-4 -left-3 sm:-bottom-5 sm:-left-5 bg-brand-cardGray border-2 border-brand-red/50 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex items-center gap-2 sm:gap-3 animate-float">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-brand-red to-brand-darkRed flex items-center justify-center text-white shadow-lg">
+                                <i class="fa-solid fa-medal text-base sm:text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider leading-none">Faixa</p>
+                                <p class="font-heading font-black text-white text-xs sm:text-sm">Preta</p>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute -top-3 -right-2 sm:-top-3 sm:-right-3 bg-brand-cardGray border-2 border-brand-gold/50 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex items-center gap-2 animate-float" style="animation-delay: 1s;">
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-brand-gold/20 border border-brand-gold/50 flex items-center justify-center text-brand-gold">
+                                <i class="fa-solid fa-users text-xs sm:text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider leading-none">Alunos</p>
+                                <p class="font-heading font-black text-white text-xs sm:text-sm">150+</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- TEXTO DO HERÓI (vem depois da foto no mobile) -->
+                <div class="lg:col-span-7 space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
                     <div class="reveal inline-flex items-center gap-2 bg-brand-red/20 border border-brand-red/50 text-red-400 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide uppercase animate-float">
                         <i class="fa-solid fa-location-dot text-brand-red animate-pulse"></i>
                         <span>Itaguaí - Rio de Janeiro</span>
                     </div>
 
-                    <!-- Main Headline -->
-                    <h1 class="reveal delay-100 font-heading text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight uppercase tracking-tight">
+                    <h1 class="reveal delay-100 font-heading text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight uppercase tracking-tight">
                         Transforme sua <span class="text-gradient-red">Mente</span> e seu <span class="text-gradient-red">Corpo</span> no Tatame
                     </h1>
 
-                    <p class="reveal delay-200 text-lg sm:text-xl text-gray-300 max-w-2xl font-light leading-relaxed">
-                        Arte Suave levada a sério. Treinos para adultos, crianças e atletas competitivos com a assinatura da **Equipe Leandro Vilar**.
+                    <p class="reveal delay-200 text-sm sm:text-xl text-gray-300 max-w-2xl font-light leading-relaxed">
+                        Arte Suave levada a sério. Treinos para adultos, crianças e atletas competitivos com a Equipe Leandro Vilar.
                     </p>
 
-                    <!-- CTA Buttons -->
-                    <div class="reveal delay-300 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-                        <a href="https://wa.me/5521999999999?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20agendar%20uma%20aula%20gratuita." target="_blank" class="btn-shine w-full sm:w-auto bg-brand-red hover:bg-red-700 text-white font-bold px-8 py-4 rounded-xl text-lg shadow-lg shadow-red-900/50 hover:shadow-red-900/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 group">
-                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <div class="reveal delay-300 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
+                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20agendar%20uma%20aula%20gratuita." target="_blank" class="btn-shine w-full sm:w-auto bg-brand-red hover:bg-red-700 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg shadow-red-900/50 hover:shadow-red-900/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 group">
+                            <i class="fa-brands fa-whatsapp text-xl sm:text-2xl"></i>
                             <span>Agendar Aula Grátis</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
                         </a>
-                        <a href="https://instagram.com/ctmorrao" target="_blank" class="w-full sm:w-auto bg-gray-900/80 hover:bg-gray-800 text-gray-200 border border-gray-700 hover:border-brand-red font-semibold px-8 py-4 rounded-xl text-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                        <a href="https://instagram.com/ctmorrao" target="_blank" class="w-full sm:w-auto bg-gray-900/80 hover:bg-gray-800 text-gray-200 border border-gray-700 hover:border-brand-red font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
                             <i class="fa-brands fa-instagram text-pink-500 text-xl"></i>
                             <span>Siga @ctmorrao</span>
                         </a>
                     </div>
 
-                    <!-- Stats Counter -->
-                    <div class="reveal delay-400 grid grid-cols-3 gap-4 pt-8 border-t border-gray-800/80 max-w-lg mx-auto lg:mx-0">
+                    <!-- STATS 3 LADO A LADO NO MOBILE -->
+                    <div class="reveal delay-400 grid grid-cols-3 gap-2 sm:gap-4 pt-6 sm:pt-8 border-t border-gray-800/80 max-w-lg mx-auto lg:mx-0">
                         <div class="text-center lg:text-left">
-                            <span class="block font-heading text-xl sm:text-3xl font-extrabold text-white">Seg, Qua, Sex</span>
-                            <span class="text-[11px] sm:text-xs text-gray-400 uppercase tracking-wider">Manhã & Noite</span>
+                            <span class="block font-heading text-[11px] xs:text-xs sm:text-2xl lg:text-3xl font-extrabold text-white leading-tight">Seg,<br class="sm:hidden"> Qua,<br class="sm:hidden"> Sex</span>
+                            <span class="text-[8px] sm:text-xs text-gray-400 uppercase tracking-wider leading-tight block mt-1">Manhã & Noite</span>
                         </div>
                         <div class="text-center lg:text-left">
-                            <span class="block font-heading text-xl sm:text-3xl font-extrabold text-brand-red"><span class="counter" data-target="100">0</span>%</span>
-                            <span class="text-[11px] sm:text-xs text-gray-400 uppercase tracking-wider">Foco & Respeito</span>
+                            <span class="block font-heading text-[11px] xs:text-xs sm:text-2xl lg:text-3xl font-extrabold text-brand-red leading-tight"><span class="counter" data-target="100">0</span>%</span>
+                            <span class="text-[8px] sm:text-xs text-gray-400 uppercase tracking-wider leading-tight block mt-1">Foco & Respeito</span>
                         </div>
                         <div class="text-center lg:text-left">
-                            <span class="block font-heading text-xl sm:text-3xl font-extrabold text-white"><span class="counter" data-target="150">0</span>+</span>
-                            <span class="text-[11px] sm:text-xs text-gray-400 uppercase tracking-wider">Alunos Ativos</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hero Graphic Badge with logo.png -->
-                <div class="reveal-scale delay-200 lg:col-span-5 flex justify-center">
-                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full border-4 border-brand-red/80 bg-gradient-to-b from-brand-cardGray to-black p-4 flex flex-col items-center justify-center text-center shadow-2xl badge-glow">
-                        <!-- Outer Animated Spin -->
-                        <div class="absolute inset-2 border-2 border-dashed border-gray-700 rounded-full animate-spin" style="animation-duration: 30s;"></div>
-                        
-                        <div class="z-10 flex flex-col items-center space-y-3">
-                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-brand-red bg-black overflow-hidden flex items-center justify-center p-2 shadow-xl group hover:scale-110 transition-transform">
-                                <img src="logo.png" alt="Escudo CT Morrão Equipe Leandro Vilar" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="hidden flex-col items-center justify-center">
-                                    <span class="text-2xl font-black text-brand-red">LV</span>
-                                    <span class="text-xs font-bold text-white">EQUIPE</span>
-                                </div>
-                            </div>
-                            <h2 class="font-heading text-2xl sm:text-3xl font-black text-gradient-red uppercase tracking-wider">CT MORRÃO</h2>
-                            <p class="text-xs font-bold text-gray-300 tracking-widest uppercase border-t border-b border-gray-800 py-1 px-4">EQUIPE LEANDRO VILAR</p>
-                            <span class="text-brand-gold text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 animate-bounce pt-1">
-                                <i class="fa-solid fa-trophy"></i> Forjando Campeões
-                            </span>
+                            <span class="block font-heading text-[11px] xs:text-xs sm:text-2xl lg:text-3xl font-extrabold text-white leading-tight"><span class="counter" data-target="150">0</span>+</span>
+                            <span class="text-[8px] sm:text-xs text-gray-400 uppercase tracking-wider leading-tight block mt-1">Alunos Ativos</span>
                         </div>
                     </div>
                 </div>
@@ -312,52 +359,45 @@
         </div>
     </section>
 
+    <!-- NOSSA HISTÓRIA - SEM IMAGENS -->
     <section id="sobre" class="py-20 bg-brand-darkGray relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="reveal text-center space-y-6">
                 
-                <!-- Image Grid -->
-                <div class="reveal-left grid grid-cols-2 gap-4">
-                    <div class="overflow-hidden rounded-2xl border border-gray-800 shadow-lg group">
-                        <img src="https://images.unsplash.com/photo-1564415303232-a39c97b203c9?auto=format&fit=crop&w=600&q=80" alt="Treino de Jiu-Jitsu CT Morrão" class="object-cover h-64 w-full group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl border border-gray-800 shadow-lg mt-8 group">
-                        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Atletas de Competição" class="object-cover h-64 w-full group-hover:scale-110 transition-transform duration-700">
-                    </div>
+                <!-- Ícone decorativo no topo -->
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand-red/10 border-2 border-brand-red/40 mb-2 badge-glow">
+                    <i class="fa-solid fa-shield-halved text-brand-red text-3xl"></i>
                 </div>
 
-                <!-- Text Content -->
-                <div class="reveal-right space-y-6">
-                    <div class="inline-flex items-center gap-2 text-brand-red font-bold text-sm tracking-widest uppercase">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <span>Nossa História & Propósito</span>
-                    </div>
-
-                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white uppercase leading-tight">
-                        CT MORRÃO <br><span class="text-brand-red">EQUIPE LEANDRO VILAR</span>
-                    </h2>
-
-                    <p class="text-gray-300 leading-relaxed">
-                        Localizado no coração de **Itaguaí - RJ**, o **CT Morrão** é mais do que um centro de treinamento de Jiu-Jitsu: é um ambiente familiar construído sobre pilares de respeito, disciplina, superação e amizade.
-                    </p>
-
-                    <div class="p-4 bg-brand-black/80 border-l-4 border-brand-red rounded-r-xl my-4 transform hover:translate-x-2 transition-transform">
-                        <p class="text-brand-gold italic font-medium">
-                            "No tatame aprendemos a cair, levantar e encarar qualquer desafio da vida com de cabeça erguida."
-                        </p>
-                    </div>
-
-                    <p class="text-gray-300 leading-relaxed">
-                        Nossos treinos atendem desde pessoas que nunca vestiram um kimono até atletas experientes focados em pódios regionais e estaduais.
-                    </p>
-
-                    <div class="pt-2">
-                        <a href="#horarios" class="inline-flex items-center gap-2 text-white bg-gray-800 hover:bg-brand-red px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all">
-                            <span>Ver Grade de Horários</span>
-                            <i class="fa-solid fa-chevron-right text-xs"></i>
-                        </a>
-                    </div>
+                <div class="inline-flex items-center gap-2 text-brand-red font-bold text-sm tracking-widest uppercase justify-center w-full">
+                    <span>Nossa História & Propósito</span>
                 </div>
+
+                <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white uppercase leading-tight">
+                    CT MORRÃO <br><span class="text-brand-red">EQUIPE LEANDRO VILAR</span>
+                </h2>
+
+                <p class="text-gray-300 leading-relaxed text-lg max-w-3xl mx-auto">
+                    Localizado no coração de <strong>Itaguaí - RJ</strong>, o <strong>CT Morrão</strong> é mais do que um centro de treinamento de Jiu-Jitsu: é um ambiente familiar construído sobre pilares de respeito, disciplina, superação e amizade.
+                </p>
+
+                <div class="p-6 bg-brand-black/80 border-l-4 border-brand-red rounded-r-xl max-w-2xl mx-auto transform hover:translate-x-2 transition-transform">
+                    <p class="text-brand-gold italic font-medium text-lg">
+                        "No tatame aprendemos a cair, levantar e encarar qualquer desafio da vida com a cabeça erguida."
+                    </p>
+                </div>
+
+                <p class="text-gray-300 leading-relaxed text-base max-w-3xl mx-auto">
+                    Nossos treinos atendem desde pessoas que nunca vestiram um kimono até atletas experientes focados em pódios regionais e estaduais. Aqui, cada aluno é tratado como família e cada faixa conquistada é celebrada como uma vitória de todos.
+                </p>
+
+                <div class="pt-4">
+                    <a href="#horarios" class="inline-flex items-center gap-2 text-white bg-brand-red hover:bg-red-700 px-8 py-3.5 rounded-xl font-bold hover:scale-105 transition-all shadow-lg shadow-red-900/40">
+                        <span>Ver Grade de Horários</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </a>
+                </div>
+
             </div>
         </div>
     </section>
@@ -366,14 +406,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
-                <!-- Profile Image Frame with fallback placeholder for vilar.jpg -->
                 <div class="reveal-left lg:col-span-5 flex justify-center">
                     <div class="relative w-full max-w-md rounded-2xl overflow-hidden border-2 border-brand-red/50 shadow-2xl bg-brand-cardGray group">
-                        <!-- Main Image Space (vilar.jpg) -->
                         <div class="relative h-[450px] w-full overflow-hidden bg-gradient-to-t from-black via-gray-900 to-gray-800 flex items-center justify-center">
-                            <img src="vilar.jpg" alt="Mestre Leandro Vilar - CT Morrão" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="vilar.jpeg" alt="Mestre Leandro Vilar - CT Morrão" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             
-                            <!-- Placeholder UI displayed if vilar.jpg is missing -->
                             <div class="hidden flex-col items-center justify-center text-center p-6 space-y-4">
                                 <div class="w-24 h-24 rounded-full border-4 border-brand-red bg-black flex items-center justify-center text-brand-red text-4xl shadow-xl">
                                     <i class="fa-solid fa-user-shield"></i>
@@ -381,15 +418,13 @@
                                 <div>
                                     <h3 class="font-heading font-extrabold text-2xl text-white">LEANDRO VILAR</h3>
                                     <p class="text-brand-gold font-bold text-sm">Faixa Preta de Jiu-Jitsu</p>
-                                    <p class="text-xs text-gray-400 mt-2 italic">[ Adicione a imagem vilar.jpg na mesma pasta ]</p>
+                                    <p class="text-xs text-gray-400 mt-2 italic">[ Adicione a imagem vilar.jpeg na mesma pasta ]</p>
                                 </div>
                             </div>
 
-                            <!-- Overlay Gradient -->
                             <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
                         </div>
 
-                        <!-- Card Badge Overlay -->
                         <div class="absolute bottom-4 left-4 right-4 bg-brand-black/90 backdrop-blur-md p-4 rounded-xl border border-gray-800">
                             <h4 class="font-heading font-bold text-lg text-white">Prof. Leandro Vilar</h4>
                             <p class="text-xs text-brand-red font-semibold uppercase tracking-wider">Líder & Head Coach - Equipe LV</p>
@@ -397,7 +432,6 @@
                     </div>
                 </div>
 
-                <!-- Professor Bio & Trajectory -->
                 <div class="reveal-right lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center gap-2 text-brand-gold font-bold text-sm tracking-widest uppercase">
                         <i class="fa-solid fa-medal"></i>
@@ -409,7 +443,7 @@
                     </h2>
 
                     <p class="text-gray-300 leading-relaxed text-base">
-                        Com anos de dedicação diária ao Jiu-Jitsu e à formação de atletas e cidadãos em Itaguaí, o **Mestre Leandro Vilar** lidera a **Equipe LV** com paixão, disciplina e rigor técnico.
+                        Com anos de dedicação diária ao Jiu-Jitsu e à formação de atletas e cidadãos em Itaguaí, o Mestre Leandro Vilar lidera a Equipe LV com paixão, disciplina e rigor técnico.
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2">
@@ -431,7 +465,7 @@
                     </p>
 
                     <div class="pt-2 flex flex-wrap gap-4">
-                        <a href="https://wa.me/5521999999999?text=Ol%C3%A1%20Mestre%20Leandro,%20gostaria%20de%20saber%20mais%20sobre%20os%20treinos!" target="_blank" class="btn-shine bg-brand-red hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl text-sm flex items-center gap-2">
+                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1%20Mestre%20Leandro,%20gostaria%20de%20saber%20mais%20sobre%20os%20treinos!" target="_blank" class="btn-shine bg-brand-red hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl text-sm flex items-center gap-2">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
                             <span>Falar com o Mestre Vilar</span>
                         </a>
@@ -456,7 +490,6 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <!-- Card 1: Adulto -->
                 <div class="reveal delay-100 bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 bg-brand-red/10 border border-brand-red/30 rounded-xl flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
@@ -474,7 +507,6 @@
                     </ul>
                 </div>
 
-                <!-- Card 2: Kids -->
                 <div class="reveal delay-200 bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 bg-brand-gold/10 border border-brand-gold/30 rounded-xl flex items-center justify-center text-brand-gold text-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
@@ -492,7 +524,6 @@
                     </ul>
                 </div>
 
-                <!-- Card 3: Competição -->
                 <div class="reveal delay-300 bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 bg-brand-red/10 border border-brand-red/30 rounded-xl flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
@@ -547,7 +578,7 @@
                                 <td class="p-4 sm:p-5"><span class="bg-red-950/80 text-red-400 border border-red-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Adulto</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
                                 <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521999999999?text=Quero%20agendar%20o%20treino%20das%2009h30" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
+                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20o%20treino%20das%2009h30" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
                                 </td>
                             </tr>
                             <tr class="hover:bg-gray-800/60 transition-colors group">
@@ -558,7 +589,7 @@
                                 <td class="p-4 sm:p-5"><span class="bg-blue-950/80 text-blue-400 border border-blue-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Kids</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
                                 <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521999999999?text=Quero%20agendar%20Jiu-Jitsu%20Kids" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
+                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20Jiu-Jitsu%20Kids" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
                                 </td>
                             </tr>
                             <tr class="hover:bg-gray-800/60 transition-colors group">
@@ -569,7 +600,7 @@
                                 <td class="p-4 sm:p-5"><span class="bg-red-950/80 text-red-400 border border-red-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Adulto</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
                                 <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521999999999?text=Quero%20agendar%20o%20treino%20das%2020h" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
+                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20o%20treino%20das%2020h" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
                                 </td>
                             </tr>
                             <tr class="hover:bg-gray-800/60 transition-colors group">
@@ -580,7 +611,7 @@
                                 <td class="p-4 sm:p-5"><span class="bg-red-950/80 text-red-400 border border-red-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Adulto (Última Turma)</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
                                 <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521999999999?text=Quero%20agendar%20a%20%C3%BAltima%20turma%20(21h30)" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
+                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20a%20%C3%BAltima%20turma%20(21h30)" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -638,7 +669,6 @@
                     </div>
                 </div>
 
-                <!-- Instagram CTA Card with logo.png -->
                 <div class="reveal-right lg:col-span-6 bg-gradient-to-br from-brand-cardGray to-black p-8 rounded-3xl border border-brand-red/30 shadow-2xl relative group">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-16 h-16 rounded-full border-2 border-brand-red bg-black p-1 flex-shrink-0 group-hover:rotate-6 transition-transform">
@@ -812,7 +842,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-white text-base">WhatsApp Direct</h4>
-                                <p class="text-sm text-gray-400">(21) 99999-9999</p>
+                                <p class="text-sm text-gray-400">(21) 98374-8088</p>
                             </div>
                         </div>
 
@@ -828,7 +858,7 @@
                     </div>
 
                     <div class="pt-4 flex flex-wrap gap-3">
-                        <a href="https://wa.me/5521999999999?text=Ol%C3%A1!%20Quero%20saber%20a%20localiza%C3%A7%C3%A3o%20exata%20do%20CT%20Morr%C3%A3o" target="_blank" class="btn-shine inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg hover:scale-105 transition-all">
+                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Quero%20saber%20a%20localiza%C3%A7%C3%A3o%20exata%20do%20CT%20Morr%C3%A3o" target="_blank" class="btn-shine inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg hover:scale-105 transition-all">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
                             <span>Falar no WhatsApp</span>
                         </a>
@@ -839,7 +869,6 @@
                     </div>
                 </div>
 
-                <!-- Google Maps Satellite Embed -->
                 <div class="reveal-right lg:col-span-7 rounded-2xl overflow-hidden border-2 border-brand-red/40 shadow-2xl h-96 lg:h-auto min-h-[400px] relative">
                     <iframe 
                         src="https://www.google.com/maps?q=-22.85625,-43.77533&z=18&t=k&output=embed"
@@ -851,7 +880,6 @@
                         referrerpolicy="no-referrer-when-downgrade"
                         title="Localização CT Morrão - Itaguaí/RJ">
                     </iframe>
-                    <!-- Badge overlay -->
                     <div class="absolute top-4 left-4 bg-brand-black/90 backdrop-blur-md px-4 py-2 rounded-lg border border-brand-red/40 flex items-center gap-2 pointer-events-none">
                         <i class="fa-solid fa-satellite text-brand-red"></i>
                         <span class="text-xs font-bold text-white uppercase tracking-wider">Vista Satélite</span>
@@ -893,7 +921,6 @@
     </footer>
 
     <script>
-        // 1. Mobile Menu Logic
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
@@ -931,7 +958,6 @@
             });
         });
 
-        // 2. Navbar Scroll Behavior
         const header = document.getElementById('main-header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -943,7 +969,6 @@
             }
         });
 
-        // 3. Scroll Reveal Observer
         const observerOptions = {
             root: null,
             threshold: 0.12
@@ -963,7 +988,6 @@
             revealObserver.observe(el);
         });
 
-        // 4. Counter Animation
         function runCounter(counter) {
             if (counter.dataset.done) return;
             counter.dataset.done = "true";
@@ -984,7 +1008,6 @@
             updateCount();
         }
 
-        // 5. FAQ Accordion Control
         const faqButtons = document.querySelectorAll('.faq-btn');
         faqButtons.forEach(btn => {
             btn.addEventListener('click', () => {
