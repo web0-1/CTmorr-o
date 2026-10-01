@@ -495,12 +495,20 @@
             .marquee-track > span { font-size: 0.95rem !important; }
             .marquee-track > i { font-size: 0.75rem !important; }
 
-            /* 5. REVEALS MAIS SUAVES */
-            .reveal { transform: translate3d(0, 35px, 0) !important; }
-            .reveal-left { transform: translate3d(-20px, 0, 0) !important; }
-            .reveal-right { transform: translate3d(20px, 0, 0) !important; }
-            .reveal-scale { transform: translate3d(0, 25px, 0) scale(0.95) !important; }
-            .reveal-blur { transform: translate3d(0, 25px, 0) !important; filter: blur(5px) !important; }
+            /* 5. REVEALS MAIS SUAVES — SEM BLUR NO MOBILE */
+            .reveal { transform: translate3d(0, 30px, 0) !important; }
+            .reveal-left { transform: translate3d(-15px, 0, 0) !important; }
+            .reveal-right { transform: translate3d(15px, 0, 0) !important; }
+            .reveal-scale { transform: translate3d(0, 20px, 0) scale(0.96) !important; }
+            /* reveal-blur vira um reveal normal no mobile (sem embaçado!) */
+            .reveal-blur {
+                transform: translate3d(0, 30px, 0) !important;
+                filter: none !important;
+            }
+            .reveal-blur.is-visible {
+                transform: translate3d(0, 0, 0) !important;
+                filter: none !important;
+            }
 
             /* 6. DESLIGA ANIMAÇÕES INFINITAS NO MOBILE */
             .animate-float { animation: none !important; }
@@ -1775,14 +1783,26 @@
                     }
                 });
             }, {
-                threshold: 0.08,
-                rootMargin: '0px 0px -80px 0px'
+                threshold: 0.01,
+                rootMargin: '0px 0px -30px 0px'
             });
 
             setTimeout(() => {
                 document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .split-text')
                     .forEach(el => observer.observe(el));
             }, 900);
+
+            // FALLBACK: no mobile, se algo ainda estiver invisível após 3s, força exibição
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-blur, .reveal, .reveal-scale, .reveal-left, .reveal-right')
+                    .forEach(el => {
+                        const rect = el.getBoundingClientRect();
+                        // Se está próximo ou visível no viewport
+                        if (rect.top < window.innerHeight + 100) {
+                            el.classList.add('is-visible');
+                        }
+                    });
+            }, 3000);
         })();
 
         /* ============ COUNTER ============ */
