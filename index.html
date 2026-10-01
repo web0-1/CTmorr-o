@@ -29,65 +29,206 @@
                         heading: ['Montserrat', 'sans-serif'],
                         body: ['Inter', 'sans-serif']
                     },
-                    screens: {
-                        'xs': '420px'
-                    }
+                    screens: { 'xs': '420px' }
                 }
             }
         }
     </script>
     
     <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: #09090b;
             color: #f3f4f6;
             overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
         }
-        .font-heading {
+        
+        @media (max-width: 1024px), (pointer: coarse) {
+            body { cursor: auto; }
+        }
+        
+        .font-heading { font-family: 'Montserrat', sans-serif; }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #dc2626, #991b1b);
+            border-radius: 10px;
+            border: 2px solid #09090b;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+
+        /* PRELOADER */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #09090b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .preloader-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid rgba(220,38,38,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%);
+            animation: preloader-pulse 1.8s ease-in-out infinite;
+        }
+        .preloader-logo::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #dc2626;
+            border-right-color: #dc2626;
+            animation: spin 1s linear infinite;
+        }
+        .preloader-logo span {
             font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: #dc2626;
         }
+        .preloader-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .preloader-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #dc2626, #ef4444, #d97706);
+            border-radius: 10px;
+            transition: width 0.25s linear;
+        }
+        .preloader-text {
+            font-size: 11px;
+            letter-spacing: 0.4em;
+            color: #71717a;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes preloader-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* SCROLL PROGRESS */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #dc2626, #ef4444, #d97706);
+            z-index: 9999;
+            will-change: width;
+        }
+
+        /* CURSOR */
+        .cursor-dot, .cursor-ring {
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            border-radius: 50%;
+        }
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #ef4444;
+        }
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(239,68,68,0.7);
+            transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+        body.cursor-hover .cursor-ring {
+            width: 56px;
+            height: 56px;
+            background-color: rgba(239,68,68,0.12);
+            border-color: #ef4444;
+        }
+        body.cursor-hover .cursor-dot { opacity: 0; }
+        @media (max-width: 1024px), (pointer: coarse) {
+            .cursor-dot, .cursor-ring { display: none; }
+        }
+
+        /* GRADIENTES */
         .text-gradient-red {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .text-gradient-gold {
             background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        .bg-gradient-hero {
-            background: linear-gradient(to bottom, rgba(9, 9, 11, 0.78), rgba(9, 9, 11, 0.94)), url('fundo.jpg') center/cover no-repeat;
-        }
-        .badge-glow {
-            box-shadow: 0 0 30px rgba(220, 38, 38, 0.35);
-            animation: pulse-glow 3s infinite ease-in-out;
+            background-clip: text;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 25px rgba(220, 38, 38, 0.35);
-                transform: scale(1);
-            }
-            50% {
-                box-shadow: 0 0 45px rgba(220, 38, 38, 0.65);
-                transform: scale(1.02);
-            }
+        .bg-gradient-hero {
+            background:
+                linear-gradient(to bottom, rgba(9, 9, 11, 0.80), rgba(9, 9, 11, 0.95)),
+                url('fundo.jpg') center/cover no-repeat;
+            background-color: #09090b;
+        }
+
+        /* BADGE GLOW */
+        .badge-glow { position: relative; }
+        .badge-glow::before {
+            content: '';
+            position: absolute;
+            inset: -14px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(220,38,38,0.55) 0%, transparent 70%);
+            animation: pulse-opacity 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes pulse-opacity {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); }
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(0, -8px, 0); }
         }
+        .animate-float { animation: float 4s ease-in-out infinite; }
 
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
-        }
-
+        /* BOTÃO COM BRILHO */
         .btn-shine {
             position: relative;
             overflow: hidden;
+            isolation: isolate;
         }
         .btn-shine::after {
             content: '';
@@ -96,89 +237,232 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(
-                60deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.25) 50%,
-                transparent 70%
-            );
-            transform: rotate(30deg);
-            transition: all 0.6s ease;
-            animation: shine-sweep 4s infinite;
+            background: linear-gradient(60deg, transparent 35%, rgba(255,255,255,0.28) 50%, transparent 65%);
+            transform: translate3d(-100%, 0, 0) rotate(30deg);
+            transition: transform 0.7s ease;
+            pointer-events: none;
+        }
+        .btn-shine:hover::after {
+            transform: translate3d(100%, 0, 0) rotate(30deg);
         }
 
-        @keyframes shine-sweep {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            20% { transform: translateX(100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
-        }
-
+        /* CARDS */
         .card-interactive {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition:
+                transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s ease,
+                border-color 0.3s ease;
         }
         .card-interactive:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 35px -10px rgba(220, 38, 38, 0.4);
+            transform: translate3d(0, -8px, 0) scale(1.02);
+            box-shadow: 0 20px 40px -12px rgba(220, 38, 38, 0.35);
             border-color: rgba(220, 38, 38, 0.6);
         }
 
-        .reveal {
+        .tilt-card {
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.3s ease;
+        }
+        .tilt-card:hover {
+            box-shadow: 0 20px 45px -15px rgba(220, 38, 38, 0.35);
+        }
+
+        /* ============================================================
+           REVEAL — VERSÃO DRAMÁTICA E CONFIÁVEL
+        ============================================================ */
+        .reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur {
             opacity: 0;
-            transform: translateY(35px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition:
+                opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
+        .reveal { transform: translate3d(0, 70px, 0); }
+        .reveal-left { transform: translate3d(-80px, 0, 0); }
+        .reveal-right { transform: translate3d(80px, 0, 0); }
+        .reveal-scale { transform: translate3d(0, 50px, 0) scale(0.88); }
+        .reveal-blur { transform: translate3d(0, 50px, 0); filter: blur(10px); }
 
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal-scale {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
+        .reveal.is-visible,
+        .reveal-left.is-visible,
+        .reveal-right.is-visible,
+        .reveal-scale.is-visible,
+        .reveal-blur.is-visible {
             opacity: 1;
-            transform: translateY(0) translateX(0) scale(1);
+            transform: translate3d(0, 0, 0) scale(1);
+            filter: blur(0);
         }
 
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
+        /* SPLIT TEXT */
+        .split-text .word {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: top;
+            padding-bottom: 0.1em;
+        }
+        .split-text .word > span {
+            display: inline-block;
+            transform: translateY(120%);
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .split-text.is-visible .word > span {
+            transform: translateY(0);
+            opacity: 1;
+        }
 
+        /* FAQ */
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-out, opacity 0.3s ease;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
             opacity: 0;
         }
         .faq-answer.open {
-            max-height: 500px;
+            max-height: 400px;
             opacity: 1;
         }
 
-        /* Garantia de exibição da foto do herói no mobile */
+        /* MARQUEE */
+        .marquee {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            width: 100%;
+        }
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-shrink: 0;
+            min-width: 100%;
+            padding-right: 3rem;
+            animation: marquee-scroll 30s linear infinite;
+            animation-play-state: running !important;
+        }
+        @keyframes marquee-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* NAV LINK */
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #dc2626;
+            transform: translateX(-50%);
+            transition: width 0.25s ease;
+            border-radius: 2px;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: #ef4444 !important; }
+
+        /* BACK TO TOP */
+        #back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.85);
+            transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease;
+            box-shadow: 0 8px 24px rgba(220,38,38,0.4);
+            cursor: pointer;
+            border: none;
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        #back-to-top:hover {
+            transform: translateY(-4px) scale(1.06);
+        }
+        #back-to-top svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 52px;
+            height: 52px;
+            transform: rotate(-90deg);
+        }
+        #back-to-top circle {
+            fill: none;
+            stroke: rgba(255,255,255,0.45);
+            stroke-width: 2;
+        }
+        @media (max-width: 767px) {
+            #back-to-top { bottom: 88px; }
+        }
+
+        /* HERO PHOTO RING */
+        .hero-photo-ring {
+            position: absolute;
+            inset: -20px;
+            border-radius: 24px;
+            border: 1px dashed rgba(220,38,38,0.35);
+            animation: rotate-slow 40s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* SECTION TAG */
+        .section-tag {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            letter-spacing: 0.25em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #dc2626;
+        }
+        .section-tag::before, .section-tag::after {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #dc2626);
+        }
+        .section-tag::after {
+            background: linear-gradient(90deg, #dc2626, transparent);
+        }
+
+        #mobile-menu { transition: opacity 0.3s ease, transform 0.3s ease; }
+
         @media (max-width: 1023px) {
-            .reveal-scale {
-                opacity: 1 !important;
-                transform: scale(1) !important;
-                transition: none;
-            }
+            .hero-photo-ring { display: none; }
         }
     </style>
 </head>
 <body class="bg-brand-black text-gray-200 antialiased selection:bg-brand-red selection:text-white">
+
+    <div id="preloader">
+        <div class="preloader-logo"><span>LV</span></div>
+        <div class="preloader-bar"><div class="preloader-bar-fill" id="preloader-fill"></div></div>
+        <div class="preloader-text" id="preloader-text">Carregando Experiência</div>
+    </div>
+
+    <div id="scroll-progress"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
 
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-brand-black/80 backdrop-blur-md border-b border-gray-900 transition-all duration-500 py-3">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,18 +482,18 @@
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-7">
-                    <a href="#sobre" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Sobre</a>
-                    <a href="#professor" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Mestre Vilar</a>
-                    <a href="#modalidades" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Modalidades</a>
-                    <a href="#horarios" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Horários</a>
-                    <a href="#polos" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Polos</a>
-                    <a href="#beneficios" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Benefícios</a>
-                    <a href="#depoimentos" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Alunos</a>
-                    <a href="#localizacao" class="text-sm font-medium text-gray-300 hover:text-brand-red transition-all duration-300 hover:-translate-y-0.5">Contato</a>
+                    <a href="#sobre" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Sobre</a>
+                    <a href="#professor" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Mestre Vilar</a>
+                    <a href="#modalidades" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Modalidades</a>
+                    <a href="#horarios" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Horários</a>
+                    <a href="#polos" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Polos</a>
+                    <a href="#beneficios" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Benefícios</a>
+                    <a href="#depoimentos" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Alunos</a>
+                    <a href="#localizacao" class="nav-link text-sm font-medium text-gray-300 hover:text-brand-red transition-colors duration-300">Contato</a>
                 </nav>
 
                 <div class="hidden md:flex items-center">
-                    <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20no%20CT%20Morr%C3%A3o!" target="_blank" rel="noopener noreferrer" class="btn-shine bg-gradient-to-r from-brand-red to-brand-darkRed hover:from-red-600 hover:to-red-800 text-white font-bold px-5 py-2.5 rounded-full text-sm shadow-lg shadow-red-900/40 hover:shadow-red-900/70 hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                    <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20aula%20experimental%20no%20CT%20Morr%C3%A3o!" target="_blank" rel="noopener noreferrer" class="btn-shine bg-gradient-to-r from-brand-red to-brand-darkRed hover:from-red-600 hover:to-red-800 text-white font-bold px-5 py-2.5 rounded-full text-sm shadow-lg shadow-red-900/40 hover:shadow-red-900/70 hover:scale-105 transition-transform duration-300 flex items-center gap-2">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
                         <span>Aula Experimental</span>
                     </a>
@@ -221,7 +505,7 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden lg:hidden bg-brand-darkGray/95 backdrop-blur-xl border-b border-gray-800 px-6 pt-4 pb-6 space-y-3 transition-all duration-300 origin-top opacity-0 -translate-y-4">
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-darkGray/95 backdrop-blur-xl border-b border-gray-800 px-6 pt-4 pb-6 space-y-3 opacity-0 -translate-y-4">
             <a href="#sobre" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Sobre</a>
             <a href="#professor" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Mestre Vilar</a>
             <a href="#modalidades" class="mobile-nav-link block text-base font-medium text-gray-300 hover:text-brand-red py-1">Modalidades</a>
@@ -237,26 +521,22 @@
     </header>
 
     <!-- HERO -->
-    <section class="relative flex items-center pt-24 pb-14 sm:min-h-screen sm:pt-28 sm:pb-20 bg-gradient-hero">
+    <section class="relative flex items-center pt-24 pb-14 sm:min-h-screen sm:pt-28 sm:pb-20 bg-gradient-hero overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
                 
-                <!-- FOTO DO HERÓI -->
-                <div class="reveal-scale delay-200 lg:col-span-5 flex justify-center order-1 lg:order-2">
+                <div class="reveal-scale lg:col-span-5 flex justify-center order-1 lg:order-2" style="transition-delay: 400ms">
                     <div class="relative w-full max-w-[300px] xs:max-w-[340px] sm:max-w-sm">
                         
-                        <div class="relative rounded-3xl overflow-hidden border-2 border-brand-red/40 shadow-2xl aspect-[4/5] group hover:border-brand-red/80 transition-all duration-500">
-                            
-                            <img src="vilar1.jpeg" 
-                                 alt="Jiu-Jitsu CT Morrão" 
-                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        <div class="hero-photo-ring hidden sm:block"></div>
+                        
+                        <div class="relative rounded-3xl overflow-hidden border-2 border-brand-red/40 shadow-2xl aspect-[4/5] group hover:border-brand-red/80 transition-colors duration-500">
+                            <img src="vilar1.jpeg" alt="Jiu-Jitsu CT Morrão" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                  onerror="this.src='https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80';">
-                            
                             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                             
                             <div class="absolute top-4 right-4 w-16 h-16 rounded-full border-2 border-brand-red bg-black/90 backdrop-blur-md p-2 flex items-center justify-center shadow-xl group-hover:rotate-12 transition-transform duration-500">
-                                <img src="logo.png" alt="Logo CT Morrão" class="w-full h-full object-contain" 
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <span class="hidden font-black text-brand-red text-lg">LV</span>
                             </div>
                             
@@ -266,26 +546,18 @@
                             </div>
                             
                             <div class="absolute bottom-0 left-0 right-0 p-5 sm:p-6 space-y-3">
-                                
                                 <h3 class="font-heading text-3xl sm:text-4xl font-black text-white uppercase leading-none tracking-tight">
                                     CT <span class="text-gradient-red">Morrão</span>
                                 </h3>
-                                
-                                <p class="text-[10px] sm:text-[11px] font-bold text-gray-300 tracking-[0.2em] uppercase">
-                                    Equipe Leandro Vilar
-                                </p>
-                                
+                                <p class="text-[10px] sm:text-[11px] font-bold text-gray-300 tracking-[0.2em] uppercase">Equipe Leandro Vilar</p>
                                 <div class="w-full h-px bg-gradient-to-r from-brand-red via-brand-red/50 to-transparent"></div>
-                                
                                 <div class="flex items-center gap-3 pt-1">
                                     <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-300">
-                                        <i class="fa-solid fa-location-dot text-brand-red"></i>
-                                        <span>Itaguaí - RJ</span>
+                                        <i class="fa-solid fa-location-dot text-brand-red"></i><span>Itaguaí - RJ</span>
                                     </div>
                                     <div class="w-1 h-1 rounded-full bg-gray-600"></div>
                                     <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-300">
-                                        <i class="fa-solid fa-hand-fist text-brand-gold"></i>
-                                        <span>Jiu-Jitsu</span>
+                                        <i class="fa-solid fa-hand-fist text-brand-gold"></i><span>Jiu-Jitsu</span>
                                     </div>
                                 </div>
                             </div>
@@ -310,39 +582,36 @@
                                 <p class="font-heading font-black text-white text-xs sm:text-sm">150+</p>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
 
-                <!-- TEXTO DO HERÓI -->
                 <div class="lg:col-span-7 space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
-                    <div class="reveal inline-flex items-center gap-2 bg-brand-red/20 border border-brand-red/50 text-red-400 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide uppercase animate-float">
-                        <i class="fa-solid fa-location-dot text-brand-red animate-pulse"></i>
+                    <div class="reveal inline-flex items-center gap-2 bg-brand-red/20 border border-brand-red/50 text-red-400 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide uppercase">
+                        <i class="fa-solid fa-location-dot text-brand-red"></i>
                         <span>Itaguaí - Rio de Janeiro</span>
                     </div>
 
-                    <h1 class="reveal delay-100 font-heading text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight uppercase tracking-tight">
+                    <h1 class="reveal split-text font-heading text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight uppercase tracking-tight" data-split style="transition-delay: 100ms">
                         Transforme sua <span class="text-gradient-red">Mente</span> e seu <span class="text-gradient-red">Corpo</span> no Tatame
                     </h1>
 
-                    <p class="reveal delay-200 text-sm sm:text-xl text-gray-300 max-w-2xl font-light leading-relaxed">
+                    <p class="reveal text-sm sm:text-xl text-gray-300 max-w-2xl font-light leading-relaxed" style="transition-delay: 300ms">
                         Arte Suave levada a sério. Treinos para adultos, crianças e atletas competitivos com a Equipe Leandro Vilar.
                     </p>
 
-                    <div class="reveal delay-300 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
-                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20agendar%20uma%20aula%20gratuita." target="_blank" class="btn-shine w-full sm:w-auto bg-brand-red hover:bg-red-700 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg shadow-red-900/50 hover:shadow-red-900/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 group">
+                    <div class="reveal flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4" style="transition-delay: 450ms">
+                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20agendar%20uma%20aula%20gratuita." target="_blank" class="btn-shine magnetic w-full sm:w-auto bg-brand-red hover:bg-red-700 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg shadow-red-900/50 transition-transform duration-300 flex items-center justify-center gap-3 group">
                             <i class="fa-brands fa-whatsapp text-xl sm:text-2xl"></i>
                             <span>Agendar Aula Grátis</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
                         </a>
-                        <a href="https://instagram.com/ctmorrao" target="_blank" class="w-full sm:w-auto bg-gray-900/80 hover:bg-gray-800 text-gray-200 border border-gray-700 hover:border-brand-red font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                        <a href="https://instagram.com/ctmorrao" target="_blank" class="magnetic w-full sm:w-auto bg-gray-900/80 hover:bg-gray-800 text-gray-200 border border-gray-700 hover:border-brand-red font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg transition-colors duration-300 flex items-center justify-center gap-3">
                             <i class="fa-brands fa-instagram text-pink-500 text-xl"></i>
                             <span>Siga @ctmorrao</span>
                         </a>
                     </div>
 
-                    <!-- STATS -->
-                    <div class="reveal delay-400 grid grid-cols-3 gap-3 pt-6 sm:pt-8 border-t border-gray-800/80 max-w-lg mx-auto lg:mx-0">
+                    <div class="reveal grid grid-cols-3 gap-3 pt-6 sm:pt-8 border-t border-gray-800/80 max-w-lg mx-auto lg:mx-0" style="transition-delay: 600ms">
                         <div class="text-center lg:text-left">
                             <span class="block font-heading text-xl sm:text-2xl lg:text-3xl font-extrabold text-white leading-none">3x</span>
                             <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider leading-tight block mt-1.5">Por semana</span>
@@ -362,48 +631,73 @@
         </div>
     </section>
 
-    <!-- NOSSA HISTÓRIA -->
+    <!-- MARQUEE -->
+    <div class="py-5 bg-brand-red/5 border-y border-brand-red/20 overflow-hidden">
+        <div class="marquee">
+            <div class="marquee-track">
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Disciplina</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Respeito</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Foco</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Superação</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Família</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Jiu-Jitsu</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+            </div>
+            <div class="marquee-track" aria-hidden="true">
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Disciplina</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Respeito</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Foco</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Superação</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Família</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+                <span class="font-heading text-lg sm:text-2xl font-black uppercase tracking-wider text-gray-500 whitespace-nowrap">Jiu-Jitsu</span>
+                <i class="fa-solid fa-hand-fist text-brand-red"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOBRE -->
     <section id="sobre" class="py-14 sm:py-20 bg-brand-darkGray relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="reveal text-center space-y-6">
-                
+            <div class="reveal-blur text-center space-y-6">
                 <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand-red/10 border-2 border-brand-red/40 mb-2 badge-glow">
                     <i class="fa-solid fa-shield-halved text-brand-red text-3xl"></i>
                 </div>
-
-                <div class="inline-flex items-center gap-2 text-brand-red font-bold text-sm tracking-widest uppercase justify-center w-full">
-                    <span>Nossa História & Propósito</span>
-                </div>
-
+                <div class="section-tag justify-center w-full"><span>Nossa História & Propósito</span></div>
                 <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white uppercase leading-tight">
                     CT MORRÃO <br><span class="text-brand-red">EQUIPE LEANDRO VILAR</span>
                 </h2>
-
                 <p class="text-gray-300 leading-relaxed text-lg max-w-3xl mx-auto">
                     Localizado no coração de <strong>Itaguaí - RJ</strong>, o <strong>CT Morrão</strong> é mais do que um centro de treinamento de Jiu-Jitsu: é um ambiente familiar construído sobre pilares de respeito, disciplina, superação e amizade.
                 </p>
-
-                <div class="p-6 bg-brand-black/80 border-l-4 border-brand-red rounded-r-xl max-w-2xl mx-auto transform hover:translate-x-2 transition-transform">
+                <div class="p-6 bg-brand-black/80 border-l-4 border-brand-red rounded-r-xl max-w-2xl mx-auto">
                     <p class="text-brand-gold italic font-medium text-lg">
                         "No tatame aprendemos a cair, levantar e encarar qualquer desafio da vida com a cabeça erguida."
                     </p>
                 </div>
-
                 <p class="text-gray-300 leading-relaxed text-base max-w-3xl mx-auto">
                     Nossos treinos atendem desde pessoas que nunca vestiram um kimono até atletas experientes focados em pódios regionais e estaduais. Aqui, cada aluno é tratado como família e cada faixa conquistada é celebrada como uma vitória de todos.
                 </p>
-
                 <div class="pt-4">
-                    <a href="#horarios" class="inline-flex items-center gap-2 text-white bg-brand-red hover:bg-red-700 px-8 py-3.5 rounded-xl font-bold hover:scale-105 transition-all shadow-lg shadow-red-900/40">
+                    <a href="#horarios" class="inline-flex items-center gap-2 text-white bg-brand-red hover:bg-red-700 px-8 py-3.5 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-red-900/40 magnetic">
                         <span>Ver Grade de Horários</span>
                         <i class="fa-solid fa-chevron-right text-xs"></i>
                     </a>
                 </div>
-
             </div>
         </div>
     </section>
 
+    <!-- PROFESSOR -->
     <section id="professor" class="py-14 sm:py-20 bg-brand-black border-t border-b border-gray-900 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 items-center">
@@ -411,8 +705,7 @@
                 <div class="reveal-left lg:col-span-5 flex justify-center">
                     <div class="relative w-full max-w-md rounded-2xl overflow-hidden border-2 border-brand-red/50 shadow-2xl bg-brand-cardGray group">
                         <div class="relative h-[380px] sm:h-[450px] w-full overflow-hidden bg-gradient-to-t from-black via-gray-900 to-gray-800 flex items-center justify-center">
-                            <img src="vilar.jpeg" alt="Mestre Leandro Vilar - CT Morrão" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            
+                            <img src="vilar.jpeg" alt="Mestre Leandro Vilar" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="hidden flex-col items-center justify-center text-center p-6 space-y-4">
                                 <div class="w-24 h-24 rounded-full border-4 border-brand-red bg-black flex items-center justify-center text-brand-red text-4xl shadow-xl">
                                     <i class="fa-solid fa-user-shield"></i>
@@ -420,13 +713,10 @@
                                 <div>
                                     <h3 class="font-heading font-extrabold text-2xl text-white">LEANDRO VILAR</h3>
                                     <p class="text-brand-gold font-bold text-sm">Faixa Preta de Jiu-Jitsu</p>
-                                    <p class="text-xs text-gray-400 mt-2 italic">[ Adicione a imagem vilar.jpeg na mesma pasta ]</p>
                                 </div>
                             </div>
-
                             <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
                         </div>
-
                         <div class="absolute bottom-4 left-4 right-4 bg-brand-black/90 backdrop-blur-md p-4 rounded-xl border border-gray-800">
                             <h4 class="font-heading font-bold text-lg text-white">Prof. Leandro Vilar</h4>
                             <p class="text-xs text-brand-red font-semibold uppercase tracking-wider">Líder & Head Coach - Equipe LV</p>
@@ -436,71 +726,59 @@
 
                 <div class="reveal-right lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center gap-2 text-brand-gold font-bold text-sm tracking-widest uppercase">
-                        <i class="fa-solid fa-medal"></i>
-                        <span>Liderança & Tradição</span>
+                        <i class="fa-solid fa-medal"></i><span>Liderança & Tradição</span>
                     </div>
-
                     <h2 class="font-heading text-3xl sm:text-5xl font-black text-white uppercase leading-tight">
                         Conheça o <span class="text-gradient-red">Mestre Leandro Vilar</span>
                     </h2>
-
                     <p class="text-gray-300 leading-relaxed text-base">
                         Com anos de dedicação diária ao Jiu-Jitsu e à formação de atletas e cidadãos em Itaguaí, o Mestre Leandro Vilar lidera a Equipe LV com paixão, disciplina e rigor técnico.
                     </p>
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2">
-                        <div class="bg-brand-cardGray p-4 rounded-xl border border-gray-800 hover:border-brand-red transition-all">
+                        <div class="bg-brand-cardGray p-4 rounded-xl border border-gray-800 hover:border-brand-red transition-colors tilt-card">
                             <i class="fa-solid fa-award text-brand-red text-2xl mb-2"></i>
                             <h4 class="font-bold text-white text-sm">Faixa Preta Diplomado</h4>
                             <p class="text-xs text-gray-400 mt-1">Metodologia comprovada focada em evolução constante de cada graduado.</p>
                         </div>
-
-                        <div class="bg-brand-cardGray p-4 rounded-xl border border-gray-800 hover:border-brand-gold transition-all">
+                        <div class="bg-brand-cardGray p-4 rounded-xl border border-gray-800 hover:border-brand-gold transition-colors tilt-card">
                             <i class="fa-solid fa-trophy text-brand-gold text-2xl mb-2"></i>
                             <h4 class="font-bold text-white text-sm">Formador de Campeões</h4>
-                            <p class="text-xs text-gray-400 mt-1">Acompanhamento e suporte completo para atletas em campeonatos de alto nível.</p>
+                            <p class="text-xs text-gray-400 mt-1">Acompanhamento e suporte completo para atletas em campeonatos.</p>
                         </div>
                     </div>
-
                     <p class="text-gray-300 leading-relaxed text-sm">
                         "Minha missão no CT Morrão é transmitir não apenas posições e raspagens, mas os valores éticos que o Jiu-Jitsu proporciona: respeito ao próximo, resiliência e autocontrole em qualquer situação."
                     </p>
-
                     <div class="pt-2 flex flex-wrap gap-4">
-                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1%20Mestre%20Leandro,%20gostaria%20de%20saber%20mais%20sobre%20os%20treinos!" target="_blank" class="btn-shine bg-brand-red hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl text-sm flex items-center gap-2">
+                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1%20Mestre%20Leandro" target="_blank" class="btn-shine magnetic bg-brand-red hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl text-sm flex items-center gap-2">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
                             <span>Falar com o Mestre Vilar</span>
                         </a>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
+    <!-- MODALIDADES -->
     <section id="modalidades" class="py-14 sm:py-20 bg-brand-darkGray">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal text-center max-w-3xl mx-auto mb-10 sm:mb-16">
-                <span class="text-brand-red font-bold text-sm tracking-widest uppercase">Treinos para todos os objetivos</span>
+                <span class="section-tag justify-center">Treinos para todos os objetivos</span>
                 <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white uppercase mt-2">
                     Nossas <span class="text-gradient-red">Modalidades</span>
                 </h2>
-                <p class="text-gray-400 mt-4">
-                    Escolha o programa ideal para você ou sua família e venha treinar no CT Morrão.
-                </p>
+                <p class="text-gray-400 mt-4">Escolha o programa ideal para você ou sua família e venha treinar no CT Morrão.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-
-                <div class="reveal delay-100 bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive flex flex-col justify-between group">
+                <div class="reveal bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive tilt-card flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 bg-brand-red/10 border border-brand-red/30 rounded-xl flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fa-solid fa-user-ninja"></i>
                         </div>
                         <h3 class="font-heading text-xl font-bold text-white mb-2 group-hover:text-brand-red transition-colors">Jiu-Jitsu Adulto</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                            Aulas do básico ao avançado. Técnicas de defesa pessoal, controle, raspagens e finalizações em ambiente respeitoso.
-                        </p>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Aulas do básico ao avançado. Técnicas de defesa pessoal, controle, raspagens e finalizações em ambiente respeitoso.</p>
                     </div>
                     <ul class="text-xs text-gray-300 space-y-2.5 border-t border-gray-800 pt-4">
                         <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-red"></i> Defesa Pessoal Efetiva</li>
@@ -509,15 +787,13 @@
                     </ul>
                 </div>
 
-                <div class="reveal delay-200 bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive flex flex-col justify-between group">
+                <div class="reveal bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive tilt-card flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 bg-brand-gold/10 border border-brand-gold/30 rounded-xl flex items-center justify-center text-brand-gold text-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fa-solid fa-child"></i>
                         </div>
                         <h3 class="font-heading text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors">Jiu-Jitsu Kids</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                            Desenvolvimento motor, disciplina, foco escolar e autoconfiança para crianças num ambiente lúdico e seguro.
-                        </p>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Desenvolvimento motor, disciplina, foco escolar e autoconfiança para crianças num ambiente lúdico e seguro.</p>
                     </div>
                     <ul class="text-xs text-gray-300 space-y-2.5 border-t border-gray-800 pt-4">
                         <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-gold"></i> Respeito a pais e professores</li>
@@ -526,15 +802,13 @@
                     </ul>
                 </div>
 
-                <div class="reveal delay-300 bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive flex flex-col justify-between group">
+                <div class="reveal bg-brand-cardGray rounded-2xl p-6 border border-gray-800 card-interactive tilt-card flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 bg-brand-red/10 border border-brand-red/30 rounded-xl flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fa-solid fa-trophy"></i>
                         </div>
                         <h3 class="font-heading text-xl font-bold text-white mb-2 group-hover:text-brand-red transition-colors">Competição</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                            Treino específico de ritmo, drills e estratégias para atletas que representam a Equipe Leandro Vilar nos campeonatos.
-                        </p>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Treino específico de ritmo, drills e estratégias para atletas que representam a Equipe Leandro Vilar nos campeonatos.</p>
                     </div>
                     <ul class="text-xs text-gray-300 space-y-2.5 border-t border-gray-800 pt-4">
                         <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-red"></i> Ajuste tático de regras</li>
@@ -542,7 +816,6 @@
                         <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-red"></i> Suporte do time em eventos</li>
                     </ul>
                 </div>
-
             </div>
         </div>
     </section>
@@ -551,23 +824,17 @@
     <section id="horarios" class="py-14 sm:py-20 bg-brand-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-                <span class="text-brand-red font-bold text-sm tracking-widest uppercase">Organize seus treinos</span>
+                <span class="section-tag justify-center">Organize seus treinos</span>
                 <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white uppercase mt-2">
                     Grade de <span class="text-gradient-red">Horários</span>
                 </h2>
-                <p class="text-gray-400 mt-2">
-                    Aulas de <strong>Segunda, Quarta e Sexta-feira</strong> — turmas Kids e Adultos em vários horários.
-                </p>
+                <p class="text-gray-400 mt-2">Aulas de <strong>Segunda, Quarta e Sexta-feira</strong> — turmas Kids e Adultos em vários horários.</p>
             </div>
 
-            <!-- MOBILE: CARDS -->
             <div class="reveal-scale md:hidden space-y-3">
-                <!-- Manhã -->
                 <div class="bg-brand-cardGray border border-gray-800 rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-amber-500 uppercase tracking-wider">
-                            <i class="fa-solid fa-sun"></i> Manhã
-                        </span>
+                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-amber-500 uppercase tracking-wider"><i class="fa-solid fa-sun"></i> Manhã</span>
                         <span class="bg-red-950/80 text-red-400 border border-red-800/50 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Adulto</span>
                     </div>
                     <div class="flex items-end justify-between gap-3">
@@ -575,16 +842,12 @@
                             <p class="font-heading text-2xl font-extrabold text-white leading-none">09:30</p>
                             <p class="text-xs text-gray-400 mt-2">até 10:30 · Seg, Qua, Sex</p>
                         </div>
-                        <a href="https://wa.me/5521983748088?text=Quero%20agendar%20o%20treino%20das%2009h30" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
+                        <a href="https://wa.me/5521983748088?text=Treino%2009h30" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
                     </div>
                 </div>
-
-                <!-- Kids -->
                 <div class="bg-brand-cardGray border border-gray-800 rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wider">
-                            <i class="fa-solid fa-moon"></i> Noite
-                        </span>
+                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wider"><i class="fa-solid fa-moon"></i> Noite</span>
                         <span class="bg-blue-950/80 text-blue-400 border border-blue-800/50 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Kids</span>
                     </div>
                     <div class="flex items-end justify-between gap-3">
@@ -592,16 +855,12 @@
                             <p class="font-heading text-2xl font-extrabold text-white leading-none">18:30</p>
                             <p class="text-xs text-gray-400 mt-2">até 19:30 · Seg, Qua, Sex</p>
                         </div>
-                        <a href="https://wa.me/5521983748088?text=Quero%20agendar%20Jiu-Jitsu%20Kids" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
+                        <a href="https://wa.me/5521983748088?text=Kids" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
                     </div>
                 </div>
-
-                <!-- Adulto 20h -->
                 <div class="bg-brand-cardGray border border-gray-800 rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wider">
-                            <i class="fa-solid fa-moon"></i> Noite
-                        </span>
+                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wider"><i class="fa-solid fa-moon"></i> Noite</span>
                         <span class="bg-red-950/80 text-red-400 border border-red-800/50 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Adulto</span>
                     </div>
                     <div class="flex items-end justify-between gap-3">
@@ -609,16 +868,12 @@
                             <p class="font-heading text-2xl font-extrabold text-white leading-none">20:00</p>
                             <p class="text-xs text-gray-400 mt-2">até 21:30 · Seg, Qua, Sex</p>
                         </div>
-                        <a href="https://wa.me/5521983748088?text=Quero%20agendar%20o%20treino%20das%2020h" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
+                        <a href="https://wa.me/5521983748088?text=20h" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
                     </div>
                 </div>
-
-                <!-- Adulto 21h30 -->
                 <div class="bg-brand-cardGray border border-gray-800 rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wider">
-                            <i class="fa-solid fa-moon"></i> Noite
-                        </span>
+                        <span class="inline-flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wider"><i class="fa-solid fa-moon"></i> Noite</span>
                         <span class="bg-red-950/80 text-red-400 border border-red-800/50 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">Última turma</span>
                     </div>
                     <div class="flex items-end justify-between gap-3">
@@ -626,12 +881,11 @@
                             <p class="font-heading text-2xl font-extrabold text-white leading-none">21:30</p>
                             <p class="text-xs text-gray-400 mt-2">até 22:30 · Seg, Qua, Sex</p>
                         </div>
-                        <a href="https://wa.me/5521983748088?text=Quero%20agendar%20a%20%C3%BAltima%20turma%20(21h30)" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
+                        <a href="https://wa.me/5521983748088?text=21h30" target="_blank" class="shrink-0 bg-brand-red hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg">Agendar</a>
                     </div>
                 </div>
             </div>
 
-            <!-- DESKTOP: TABELA -->
             <div class="reveal-scale hidden md:block bg-brand-cardGray border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -646,48 +900,32 @@
                         </thead>
                         <tbody class="divide-y divide-gray-800 text-sm">
                             <tr class="hover:bg-gray-800/60 transition-colors group">
-                                <td class="p-4 sm:p-5 font-semibold text-brand-gold flex items-center gap-2">
-                                    <i class="fa-solid fa-sun group-hover:rotate-45 transition-transform text-amber-500"></i> Manhã
-                                </td>
+                                <td class="p-4 sm:p-5 font-semibold text-brand-gold flex items-center gap-2"><i class="fa-solid fa-sun group-hover:rotate-45 transition-transform text-amber-500"></i> Manhã</td>
                                 <td class="p-4 sm:p-5 font-bold text-white">09:30 - 10:30</td>
                                 <td class="p-4 sm:p-5"><span class="bg-red-950/80 text-red-400 border border-red-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Adulto</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
-                                <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20o%20treino%20das%2009h30" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
-                                </td>
+                                <td class="p-4 sm:p-5 text-right"><a href="https://wa.me/5521983748088?text=09h30" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg inline-block hover:scale-105 transition-transform">Agendar</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/60 transition-colors group">
-                                <td class="p-4 sm:p-5 font-semibold text-blue-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-moon group-hover:-rotate-12 transition-transform"></i> Noite
-                                </td>
+                                <td class="p-4 sm:p-5 font-semibold text-blue-400 flex items-center gap-2"><i class="fa-solid fa-moon group-hover:-rotate-12 transition-transform"></i> Noite</td>
                                 <td class="p-4 sm:p-5 font-bold text-white">18:30 - 19:30</td>
                                 <td class="p-4 sm:p-5"><span class="bg-blue-950/80 text-blue-400 border border-blue-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Kids</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
-                                <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20Jiu-Jitsu%20Kids" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
-                                </td>
+                                <td class="p-4 sm:p-5 text-right"><a href="https://wa.me/5521983748088?text=Kids" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg inline-block hover:scale-105 transition-transform">Agendar</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/60 transition-colors group">
-                                <td class="p-4 sm:p-5 font-semibold text-blue-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-moon group-hover:-rotate-12 transition-transform"></i> Noite
-                                </td>
+                                <td class="p-4 sm:p-5 font-semibold text-blue-400 flex items-center gap-2"><i class="fa-solid fa-moon group-hover:-rotate-12 transition-transform"></i> Noite</td>
                                 <td class="p-4 sm:p-5 font-bold text-white">20:00 - 21:30</td>
                                 <td class="p-4 sm:p-5"><span class="bg-red-950/80 text-red-400 border border-red-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Adulto</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
-                                <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20o%20treino%20das%2020h" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
-                                </td>
+                                <td class="p-4 sm:p-5 text-right"><a href="https://wa.me/5521983748088?text=20h" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg inline-block hover:scale-105 transition-transform">Agendar</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/60 transition-colors group">
-                                <td class="p-4 sm:p-5 font-semibold text-blue-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-moon group-hover:-rotate-12 transition-transform"></i> Noite
-                                </td>
+                                <td class="p-4 sm:p-5 font-semibold text-blue-400 flex items-center gap-2"><i class="fa-solid fa-moon group-hover:-rotate-12 transition-transform"></i> Noite</td>
                                 <td class="p-4 sm:p-5 font-bold text-white">21:30 - 22:30</td>
                                 <td class="p-4 sm:p-5"><span class="bg-red-950/80 text-red-400 border border-red-800/50 px-3 py-1 rounded-full text-xs font-semibold">Jiu-Jitsu Adulto (Última Turma)</span></td>
                                 <td class="p-4 sm:p-5 text-gray-300">Seg, Qua, Sex</td>
-                                <td class="p-4 sm:p-5 text-right">
-                                    <a href="https://wa.me/5521983748088?text=Quero%20agendar%20a%20%C3%BAltima%20turma%20(21h30)" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition-transform inline-block hover:scale-105">Agendar</a>
-                                </td>
+                                <td class="p-4 sm:p-5 text-right"><a href="https://wa.me/5521983748088?text=21h30" target="_blank" class="text-xs bg-brand-red hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg inline-block hover:scale-105 transition-transform">Agendar</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -696,19 +934,14 @@
         </div>
     </section>
 
-    <!-- ÁRVORE GENEALÓGICA DOS POLOS -->
+    <!-- POLOS -->
     <section id="polos" class="py-14 sm:py-20 bg-brand-darkGray border-t border-gray-900 relative overflow-hidden">
-        
-        <!-- Glow de fundo -->
         <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at top center, rgba(220,38,38,0.12) 0%, transparent 55%);"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            
-            <!-- HEADER -->
             <div class="reveal text-center max-w-3xl mx-auto mb-12 sm:mb-16">
                 <div class="inline-flex items-center gap-2 text-brand-red font-bold text-sm tracking-widest uppercase">
-                    <i class="fa-solid fa-sitemap"></i>
-                    <span>Nossa Família</span>
+                    <i class="fa-solid fa-sitemap"></i><span>Nossa Família</span>
                 </div>
                 <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white uppercase mt-3">
                     Árvore <span class="text-gradient-red">Genealógica</span>
@@ -718,20 +951,17 @@
                 </p>
             </div>
 
-            <!-- MATRIZ -->
             <div class="relative">
                 <div class="reveal-scale flex justify-center">
                     <div class="w-full max-w-md relative">
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
                             <div class="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-gold to-yellow-500 text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl shadow-amber-900/50">
-                                <i class="fa-solid fa-crown"></i>
-                                <span>Matriz Oficial</span>
+                                <i class="fa-solid fa-crown"></i><span>Matriz Oficial</span>
                             </div>
                         </div>
                         
                         <div class="relative bg-gradient-to-br from-brand-red via-brand-darkRed to-black p-[2px] rounded-3xl shadow-2xl shadow-red-900/50 mt-4">
                             <div class="bg-brand-black rounded-[22px] p-6 sm:p-8 text-center">
-                                
                                 <div class="w-20 h-20 mx-auto rounded-full border-2 border-brand-red bg-black flex items-center justify-center overflow-hidden shadow-xl mb-4">
                                     <img src="logo.png" alt="Logo CT Morrão" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                     <div class="hidden w-full h-full flex-col items-center justify-center bg-black">
@@ -739,32 +969,22 @@
                                         <i class="fa-solid fa-hand-fist text-xs text-white"></i>
                                     </div>
                                 </div>
-                                
                                 <h3 class="font-heading text-2xl sm:text-3xl font-black text-white uppercase leading-tight">CT Morrão</h3>
                                 <p class="text-[11px] text-brand-red font-bold tracking-[0.2em] uppercase mt-1.5">Equipe Leandro Vilar</p>
-                                
                                 <div class="my-5 h-px bg-gradient-to-r from-transparent via-brand-red/60 to-transparent"></div>
-                                
                                 <div class="space-y-4">
                                     <div>
                                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Head Coach</p>
                                         <p class="text-base text-white font-bold">Prof. Leandro Vilar</p>
-                                        <p class="text-xs text-brand-gold font-bold uppercase tracking-wider mt-0.5">
-                                            <i class="fa-solid fa-medal mr-1"></i> Faixa Preta
-                                        </p>
+                                        <p class="text-xs text-brand-gold font-bold uppercase tracking-wider mt-0.5"><i class="fa-solid fa-medal mr-1"></i> Faixa Preta</p>
                                     </div>
-
                                     <div>
                                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Instrutor Kids</p>
                                         <p class="text-base text-white font-bold">Victor Gabriel</p>
-                                        <p class="text-xs text-amber-600 font-bold uppercase tracking-wider mt-0.5">
-                                            <i class="fa-solid fa-medal mr-1"></i> Faixa Marrom
-                                        </p>
+                                        <p class="text-xs text-amber-600 font-bold uppercase tracking-wider mt-0.5"><i class="fa-solid fa-medal mr-1"></i> Faixa Marrom</p>
                                     </div>
-
                                     <div class="flex items-center justify-center gap-2 text-xs text-gray-400 pt-2">
-                                        <i class="fa-solid fa-location-dot text-brand-red"></i>
-                                        <span>Itaguaí - Rio de Janeiro</span>
+                                        <i class="fa-solid fa-location-dot text-brand-red"></i><span>Itaguaí - Rio de Janeiro</span>
                                     </div>
                                 </div>
                             </div>
@@ -772,29 +992,20 @@
                     </div>
                 </div>
                 
-                <!-- Tronco -->
-                <div class="flex justify-center">
-                    <div class="w-0.5 h-10 bg-gradient-to-b from-brand-red/70 to-brand-red/30"></div>
-                </div>
-                <div class="flex justify-center">
-                    <div class="w-3 h-3 rounded-full bg-brand-red shadow-lg shadow-red-900/80 ring-4 ring-brand-red/20 -mt-1.5 -mb-1"></div>
-                </div>
+                <div class="flex justify-center"><div class="w-0.5 h-10 bg-gradient-to-b from-brand-red/70 to-brand-red/30"></div></div>
+                <div class="flex justify-center"><div class="w-3 h-3 rounded-full bg-brand-red shadow-lg shadow-red-900/80 ring-4 ring-brand-red/20 -mt-1.5 -mb-1"></div></div>
             </div>
 
-            <!-- POLOS GRID -->
             <div class="mt-6 sm:mt-8">
                 <div class="flex flex-wrap justify-center gap-5 sm:gap-6">
                     
-                    <!-- POLO 1: ITACURUÇÁ -->
-                    <div class="reveal delay-100 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
-                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-brand-red/60 rounded-2xl p-5 sm:p-6 card-interactive flex flex-col relative overflow-hidden">
+                    <div class="reveal w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-brand-red/60 rounded-2xl p-5 sm:p-6 card-interactive tilt-card flex flex-col relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-red to-brand-red/20"></div>
-                            
                             <div class="pl-3 mb-4">
                                 <h3 class="font-heading text-lg sm:text-xl font-extrabold text-white leading-tight uppercase">Itacuruçá</h3>
                                 <p class="text-[10px] text-brand-red font-bold uppercase tracking-widest mt-1">Polo Equipe LV</p>
                             </div>
-                            
                             <div class="pl-3 space-y-2.5 text-sm">
                                 <div>
                                     <p class="text-[10px] text-gray-500 uppercase tracking-widest">Responsável</p>
@@ -805,14 +1016,11 @@
                                     <p class="text-gray-300 text-xs">Fábio Wallace · Aiade Amorim <span class="text-purple-400 font-semibold">(Roxa)</span></p>
                                 </div>
                             </div>
-                            
                             <div class="my-4 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
-                            
                             <div class="flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-solid fa-location-dot text-brand-red mt-0.5 shrink-0"></i>
                                 <span>Estádio Municipal Hélio Rodrigues de Siqueira</span>
                             </div>
-                            
                             <div class="mt-3 flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-regular fa-clock text-brand-gold mt-0.5 shrink-0"></i>
                                 <div>
@@ -823,16 +1031,13 @@
                         </div>
                     </div>
 
-                    <!-- POLO 2: CT DO BRISA -->
-                    <div class="reveal delay-200 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
-                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-brand-gold/60 rounded-2xl p-5 sm:p-6 card-interactive flex flex-col relative overflow-hidden">
+                    <div class="reveal w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-brand-gold/60 rounded-2xl p-5 sm:p-6 card-interactive tilt-card flex flex-col relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-gold to-brand-gold/20"></div>
-                            
                             <div class="pl-3 mb-4">
                                 <h3 class="font-heading text-lg sm:text-xl font-extrabold text-white leading-tight uppercase">CT do Brisa</h3>
                                 <p class="text-[10px] text-brand-gold font-bold uppercase tracking-widest mt-1">Polo Equipe LV</p>
                             </div>
-                            
                             <div class="pl-3 space-y-2.5 text-sm">
                                 <div>
                                     <p class="text-[10px] text-gray-500 uppercase tracking-widest">Responsável</p>
@@ -843,14 +1048,11 @@
                                     <p class="text-gray-300 text-xs">Luyzi Rayane R. Gonçalves · Jean Felipe de Souza Matos <span class="text-amber-600 font-semibold">(Marrom)</span></p>
                                 </div>
                             </div>
-                            
                             <div class="my-4 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
-                            
                             <div class="flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-solid fa-location-dot text-brand-gold mt-0.5 shrink-0"></i>
                                 <span>Rua Rui Barbosa, Lote 08, Quadra 142</span>
                             </div>
-                            
                             <div class="mt-3 flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-regular fa-clock text-brand-red mt-0.5 shrink-0"></i>
                                 <div>
@@ -863,16 +1065,13 @@
                         </div>
                     </div>
 
-                    <!-- POLO 3: PIRANEMA -->
-                    <div class="reveal delay-300 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
-                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-blue-500/60 rounded-2xl p-5 sm:p-6 card-interactive flex flex-col relative overflow-hidden">
+                    <div class="reveal w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-blue-500/60 rounded-2xl p-5 sm:p-6 card-interactive tilt-card flex flex-col relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-blue-500/20"></div>
-                            
                             <div class="pl-3 mb-4">
                                 <h3 class="font-heading text-lg sm:text-xl font-extrabold text-white leading-tight uppercase">Piranema</h3>
                                 <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mt-1">Polo Equipe LV</p>
                             </div>
-                            
                             <div class="pl-3 space-y-2.5 text-sm">
                                 <div>
                                     <p class="text-[10px] text-gray-500 uppercase tracking-widest">Responsável</p>
@@ -883,14 +1082,11 @@
                                     <p class="text-gray-300 text-xs">Heloa <span class="text-purple-400 font-semibold">(Roxa)</span></p>
                                 </div>
                             </div>
-                            
                             <div class="my-4 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
-                            
                             <div class="flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-solid fa-location-dot text-blue-400 mt-0.5 shrink-0"></i>
                                 <span>Dentro da Academia Roady</span>
                             </div>
-                            
                             <div class="mt-3 flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-regular fa-clock text-brand-red mt-0.5 shrink-0"></i>
                                 <div>
@@ -904,16 +1100,13 @@
                         </div>
                     </div>
 
-                    <!-- POLO 4: APRISCO -->
-                    <div class="reveal delay-100 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
-                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-emerald-500/60 rounded-2xl p-5 sm:p-6 card-interactive flex flex-col relative overflow-hidden">
+                    <div class="reveal w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-emerald-500/60 rounded-2xl p-5 sm:p-6 card-interactive tilt-card flex flex-col relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-emerald-500 to-emerald-500/20"></div>
-                            
                             <div class="pl-3 mb-4">
                                 <h3 class="font-heading text-lg sm:text-xl font-extrabold text-white leading-tight uppercase">Aprisco</h3>
                                 <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mt-1">Polo Equipe LV</p>
                             </div>
-                            
                             <div class="pl-3 space-y-2.5 text-sm">
                                 <div>
                                     <p class="text-[10px] text-gray-500 uppercase tracking-widest">Responsável</p>
@@ -924,14 +1117,11 @@
                                     <p class="text-gray-300 text-xs">Thiago Francis <span class="text-amber-600 font-semibold">(Marrom)</span></p>
                                 </div>
                             </div>
-                            
                             <div class="my-4 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
-                            
                             <div class="flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-solid fa-location-dot text-emerald-400 mt-0.5 shrink-0"></i>
                                 <span>Rua Xavante, Lote 28, Quadra 75</span>
                             </div>
-                            
                             <div class="mt-3 flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-regular fa-clock text-brand-gold mt-0.5 shrink-0"></i>
                                 <div>
@@ -942,30 +1132,24 @@
                         </div>
                     </div>
 
-                    <!-- POLO 5: RENATO TCHÊ -->
-                    <div class="reveal delay-200 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
-                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-purple-500/60 rounded-2xl p-5 sm:p-6 card-interactive flex flex-col relative overflow-hidden">
+                    <div class="reveal w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <div class="group h-full bg-brand-cardGray border border-gray-800 hover:border-purple-500/60 rounded-2xl p-5 sm:p-6 card-interactive tilt-card flex flex-col relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-purple-500 to-purple-500/20"></div>
-                            
                             <div class="pl-3 mb-4">
                                 <h3 class="font-heading text-lg sm:text-xl font-extrabold text-white leading-tight uppercase">Equipe Renato Tchê</h3>
                                 <p class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1">Polo Equipe LV</p>
                             </div>
-                            
                             <div class="pl-3 space-y-2.5 text-sm">
                                 <div>
                                     <p class="text-[10px] text-gray-500 uppercase tracking-widest">Responsável</p>
                                     <p class="text-white font-semibold">Renato Fernandes</p>
                                 </div>
                             </div>
-                            
                             <div class="my-4 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
-                            
                             <div class="flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-solid fa-location-dot text-purple-400 mt-0.5 shrink-0"></i>
                                 <span>Rua Adalberto Pereira Pinto, Nº 515</span>
                             </div>
-                            
                             <div class="mt-3 flex items-start gap-2 text-xs text-gray-400 pl-3">
                                 <i class="fa-regular fa-clock text-brand-red mt-0.5 shrink-0"></i>
                                 <div>
@@ -978,52 +1162,46 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 
+    <!-- BENEFÍCIOS -->
     <section id="beneficios" class="py-14 sm:py-20 bg-brand-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 items-center">
                 
                 <div class="reveal-left lg:col-span-6 space-y-6">
-                    <span class="text-brand-red font-bold text-sm tracking-widest uppercase">Evolução Pessoal</span>
+                    <span class="section-tag">Evolução Pessoal</span>
                     <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white uppercase">
                         Benefícios do Jiu-Jitsu <br>para sua Vida
                     </h2>
-                    <p class="text-gray-400">
-                        O treino no tatame se reflete diretamente em todas as esferas da sua rotina diária.
-                    </p>
+                    <p class="text-gray-400">O treino no tatame se reflete diretamente em todas as esferas da sua rotina diária.</p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-red/50 hover:scale-105 transition-all flex items-start gap-3">
+                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-red/50 transition-colors tilt-card flex items-start gap-3">
                             <i class="fa-solid fa-heart-pulse text-brand-red text-xl mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-white text-sm">Saúde Cardiovascular</h4>
                                 <p class="text-xs text-gray-400 mt-1">Gasto calórico elevado e ganho de fôlego real.</p>
                             </div>
                         </div>
-
-                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-gold/50 hover:scale-105 transition-all flex items-start gap-3">
+                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-gold/50 transition-colors tilt-card flex items-start gap-3">
                             <i class="fa-solid fa-brain text-brand-gold text-xl mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-white text-sm">Foco & Saúde Mental</h4>
                                 <p class="text-xs text-gray-400 mt-1">Redução da ansiedade e aumento da concentração.</p>
                             </div>
                         </div>
-
-                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-gold/50 hover:scale-105 transition-all flex items-start gap-3">
+                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-gold/50 transition-colors tilt-card flex items-start gap-3">
                             <i class="fa-solid fa-shield text-brand-gold text-xl mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-white text-sm">Autodefesa Real</h4>
                                 <p class="text-xs text-gray-400 mt-1">Aprenda a se defender em situações sob pressão.</p>
                             </div>
                         </div>
-
-                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-red/50 hover:scale-105 transition-all flex items-start gap-3">
+                        <div class="p-4 bg-brand-cardGray rounded-xl border border-gray-800 hover:border-brand-red/50 transition-colors tilt-card flex items-start gap-3">
                             <i class="fa-solid fa-users text-brand-red text-xl mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-white text-sm">Comunidade Unida</h4>
@@ -1033,10 +1211,10 @@
                     </div>
                 </div>
 
-                <div class="reveal-right lg:col-span-6 bg-gradient-to-br from-brand-cardGray to-black p-6 sm:p-8 rounded-3xl border border-brand-red/30 shadow-2xl relative group">
+                <div class="reveal-right lg:col-span-6 p-6 sm:p-8 rounded-3xl shadow-2xl relative group tilt-card" style="background: linear-gradient(#1c1c21, #1c1c21) padding-box, linear-gradient(135deg, rgba(220,38,38,0.6), rgba(217,119,6,0.3), rgba(220,38,38,0.6)) border-box; border: 1px solid transparent;">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-16 h-16 rounded-full border-2 border-brand-red bg-black p-1 flex-shrink-0 group-hover:rotate-6 transition-transform">
-                            <img src="logo.png" alt="Logo CT Morrão" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="hidden w-full h-full items-center justify-center font-bold text-white text-lg">LV</div>
                         </div>
                         <div>
@@ -1044,44 +1222,38 @@
                             <p class="text-xs text-gray-400">Acompanhe os treinos diários no Instagram</p>
                         </div>
                     </div>
-
                     <p class="text-sm text-gray-300 italic mb-6">
                         "Constância no treino gera resultado no tatame e na vida. Venha fazer parte da Equipe Leandro Vilar em Itaguaí!"
                     </p>
-
-                    <a href="https://instagram.com/ctmorrao" target="_blank" class="btn-shine w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:opacity-95 text-white font-bold py-3.5 px-6 rounded-xl text-center flex items-center justify-center gap-2 hover:scale-105 transition-all">
+                    <a href="https://instagram.com/ctmorrao" target="_blank" class="btn-shine magnetic w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:opacity-95 text-white font-bold py-3.5 px-6 rounded-xl text-center flex items-center justify-center gap-2 transition-transform">
                         <i class="fa-brands fa-instagram text-xl"></i>
                         <span>Siga Nosso Instagram Oficial</span>
                     </a>
                 </div>
-
             </div>
         </div>
     </section>
 
+    <!-- DEPOIMENTOS -->
     <section id="depoimentos" class="py-14 sm:py-20 bg-brand-darkGray border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal text-center max-w-3xl mx-auto mb-10 sm:mb-16">
-                <span class="text-brand-red font-bold text-sm tracking-widest uppercase">Comunidade CT Morrão</span>
+                <span class="section-tag justify-center">Comunidade CT Morrão</span>
                 <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white uppercase mt-2">
                     O que dizem <span class="text-gradient-red">Nossos Alunos</span>
                 </h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                <div class="reveal delay-100 bg-brand-cardGray p-6 rounded-2xl border border-gray-800 flex flex-col justify-between">
+                <div class="reveal bg-brand-cardGray p-6 rounded-2xl border border-gray-800 card-interactive tilt-card flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="text-brand-gold text-sm flex gap-1">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <p class="text-gray-300 text-sm italic">
-                            "Ambiente excelente! O Mestre Vilar dá total atenção para quem está começando. Mudei minha disposição física completamente."
-                        </p>
+                        <p class="text-gray-300 text-sm italic">"Ambiente excelente! O Mestre Vilar dá total atenção para quem está começando. Mudei minha disposição física completamente."</p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-gray-800 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-brand-red/30 border border-brand-red flex items-center justify-center font-bold text-white text-xs">
-                            RM
-                        </div>
+                        <div class="w-10 h-10 rounded-full bg-brand-red/30 border border-brand-red flex items-center justify-center font-bold text-white text-xs">RM</div>
                         <div>
                             <h4 class="font-bold text-white text-sm">Rodrigo M.</h4>
                             <span class="text-xs text-gray-500">Aluno Jiu-Jitsu Adulto</span>
@@ -1089,19 +1261,15 @@
                     </div>
                 </div>
 
-                <div class="reveal delay-200 bg-brand-cardGray p-6 rounded-2xl border border-gray-800 flex flex-col justify-between">
+                <div class="reveal bg-brand-cardGray p-6 rounded-2xl border border-gray-800 card-interactive tilt-card flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="text-brand-gold text-sm flex gap-1">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <p class="text-gray-300 text-sm italic">
-                            "Meu filho treina no Jiu-Jitsu Kids e a evolução dele na escola e em casa foi nítida. Disciplina impecável da equipe."
-                        </p>
+                        <p class="text-gray-300 text-sm italic">"Meu filho treina no Jiu-Jitsu Kids e a evolução dele na escola e em casa foi nítida. Disciplina impecável da equipe."</p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-gray-800 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-brand-gold/30 border border-brand-gold flex items-center justify-center font-bold text-white text-xs">
-                            CS
-                        </div>
+                        <div class="w-10 h-10 rounded-full bg-brand-gold/30 border border-brand-gold flex items-center justify-center font-bold text-white text-xs">CS</div>
                         <div>
                             <h4 class="font-bold text-white text-sm">Camila S.</h4>
                             <span class="text-xs text-gray-500">Mãe de Aluno Kids</span>
@@ -1109,19 +1277,15 @@
                     </div>
                 </div>
 
-                <div class="reveal delay-300 bg-brand-cardGray p-6 rounded-2xl border border-gray-800 flex flex-col justify-between">
+                <div class="reveal bg-brand-cardGray p-6 rounded-2xl border border-gray-800 card-interactive tilt-card flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="text-brand-gold text-sm flex gap-1">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <p class="text-gray-300 text-sm italic">
-                            "Treino de altíssimo nível. A preparação para campeonatos da equipe Leandro Vilar é forte demais!"
-                        </p>
+                        <p class="text-gray-300 text-sm italic">"Treino de altíssimo nível. A preparação para campeonatos da equipe Leandro Vilar é forte demais!"</p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-gray-800 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-brand-red/30 border border-brand-red flex items-center justify-center font-bold text-white text-xs">
-                            GS
-                        </div>
+                        <div class="w-10 h-10 rounded-full bg-brand-red/30 border border-brand-red flex items-center justify-center font-bold text-white text-xs">GS</div>
                         <div>
                             <h4 class="font-bold text-white text-sm">Gabriel S.</h4>
                             <span class="text-xs text-gray-500">Atleta de Competição</span>
@@ -1132,17 +1296,18 @@
         </div>
     </section>
 
+    <!-- FAQ -->
     <section id="faq" class="py-14 sm:py-20 bg-brand-black border-t border-gray-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal text-center mb-10 sm:mb-12">
-                <span class="text-brand-red font-bold text-sm tracking-widest uppercase">Tire suas dúvidas</span>
+                <span class="section-tag justify-center">Tire suas dúvidas</span>
                 <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white uppercase mt-2">
                     Perguntas <span class="text-gradient-red">Frequentes</span>
                 </h2>
             </div>
 
             <div class="space-y-4">
-                <div class="reveal delay-100 bg-brand-cardGray border border-gray-800 rounded-xl overflow-hidden">
+                <div class="reveal bg-brand-cardGray border border-gray-800 rounded-xl overflow-hidden hover:border-brand-red/40 transition-colors">
                     <button class="faq-btn w-full p-5 text-left font-bold text-white flex justify-between items-center hover:text-brand-red transition-colors focus:outline-none">
                         <span>Preciso de um kimono para fazer a primeira aula?</span>
                         <i class="fa-solid fa-chevron-down text-brand-red transition-transform duration-300 faq-icon"></i>
@@ -1151,8 +1316,7 @@
                         Não! Na aula experimental você pode vir com uma roupa de ginástica confortável (short e camiseta). Orientaremos sobre o kimono assim que se matricular.
                     </div>
                 </div>
-
-                <div class="reveal delay-200 bg-brand-cardGray border border-gray-800 rounded-xl overflow-hidden">
+                <div class="reveal bg-brand-cardGray border border-gray-800 rounded-xl overflow-hidden hover:border-brand-red/40 transition-colors">
                     <button class="faq-btn w-full p-5 text-left font-bold text-white flex justify-between items-center hover:text-brand-red transition-colors focus:outline-none">
                         <span>Nunca pratiquei nenhuma luta. Consigo acompanhar?</span>
                         <i class="fa-solid fa-chevron-down text-brand-red transition-transform duration-300 faq-icon"></i>
@@ -1161,8 +1325,7 @@
                         Com certeza! As aulas atendem desde o iniciante do zero. O Mestre Leandro Vilar garante acompanhamento individualizado para os fundamentos.
                     </div>
                 </div>
-
-                <div class="reveal delay-300 bg-brand-cardGray border border-gray-800 rounded-xl overflow-hidden">
+                <div class="reveal bg-brand-cardGray border border-gray-800 rounded-xl overflow-hidden hover:border-brand-red/40 transition-colors">
                     <button class="faq-btn w-full p-5 text-left font-bold text-white flex justify-between items-center hover:text-brand-red transition-colors focus:outline-none">
                         <span>A partir de qual idade as crianças podem participar?</span>
                         <i class="fa-solid fa-chevron-down text-brand-red transition-transform duration-300 faq-icon"></i>
@@ -1175,18 +1338,17 @@
         </div>
     </section>
 
+    <!-- LOCALIZAÇÃO -->
     <section id="localizacao" class="py-14 sm:py-20 bg-brand-darkGray relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12">
                 
                 <div class="reveal-left lg:col-span-5 space-y-6">
-                    <span class="text-brand-red font-bold text-sm tracking-widest uppercase">Venha treinar conosco</span>
+                    <span class="section-tag">Venha treinar conosco</span>
                     <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white uppercase">
                         O Tatame te <span class="text-gradient-red">Espera</span>
                     </h2>
-                    <p class="text-gray-300">
-                        Venha conhecer o CT Morrão em Itaguaí - RJ e faça seu treino experimental sem compromisso.
-                    </p>
+                    <p class="text-gray-300">Venha conhecer o CT Morrão em Itaguaí - RJ e faça seu treino experimental sem compromisso.</p>
 
                     <div class="space-y-4 pt-2">
                         <div class="flex items-start gap-4">
@@ -1199,7 +1361,6 @@
                                 <p class="text-xs text-gray-500 mt-1">Coordenadas: 22°51'22.5"S 43°46'31.2"W</p>
                             </div>
                         </div>
-
                         <div class="flex items-start gap-4">
                             <div class="w-10 h-10 rounded-lg bg-brand-red/20 border border-brand-red/40 flex items-center justify-center text-brand-red flex-shrink-0 mt-1">
                                 <i class="fa-brands fa-whatsapp text-lg"></i>
@@ -1209,7 +1370,6 @@
                                 <p class="text-sm text-gray-400">(21) 98374-8088</p>
                             </div>
                         </div>
-
                         <div class="flex items-start gap-4">
                             <div class="w-10 h-10 rounded-lg bg-brand-red/20 border border-brand-red/40 flex items-center justify-center text-brand-red flex-shrink-0 mt-1">
                                 <i class="fa-brands fa-instagram text-lg"></i>
@@ -1222,11 +1382,11 @@
                     </div>
 
                     <div class="pt-4 flex flex-col sm:flex-row flex-wrap gap-3">
-                        <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Quero%20saber%20a%20localiza%C3%A7%C3%A3o%20exata%20do%20CT%20Morr%C3%A3o" target="_blank" class="btn-shine inline-flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg hover:scale-105 transition-all w-full sm:w-auto">
+                        <a href="https://wa.me/5521983748088" target="_blank" class="btn-shine magnetic inline-flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition-transform w-full sm:w-auto">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
                             <span>Falar no WhatsApp</span>
                         </a>
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=-22.85625,-43.77533&travelmode=driving" target="_blank" class="inline-flex items-center justify-center gap-3 bg-brand-red hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg hover:scale-105 transition-all w-full sm:w-auto">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=-22.85625,-43.77533&travelmode=driving" target="_blank" class="magnetic inline-flex items-center justify-center gap-3 bg-brand-red hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition-transform w-full sm:w-auto">
                             <i class="fa-solid fa-route text-xl"></i>
                             <span>Traçar Rota</span>
                         </a>
@@ -1236,20 +1396,15 @@
                 <div class="reveal-right lg:col-span-7 rounded-2xl overflow-hidden border-2 border-brand-red/40 shadow-2xl h-72 sm:h-96 lg:h-auto min-h-[300px] relative">
                     <iframe 
                         src="https://www.google.com/maps?q=-22.85625,-43.77533&z=18&t=k&output=embed"
-                        width="100%" 
-                        height="100%" 
-                        style="border:0; min-height:300px;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade"
-                        title="Localização CT Morrão - Itaguaí/RJ">
+                        width="100%" height="100%" style="border:0; min-height:300px; filter: grayscale(0.5) contrast(1.05);" 
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        title="Localização CT Morrão">
                     </iframe>
                     <div class="absolute top-4 left-4 bg-brand-black/90 backdrop-blur-md px-4 py-2 rounded-lg border border-brand-red/40 flex items-center gap-2 pointer-events-none">
                         <i class="fa-solid fa-satellite text-brand-red"></i>
                         <span class="text-xs font-bold text-white uppercase tracking-wider">Vista Satélite</span>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -1257,7 +1412,6 @@
     <footer class="bg-black border-t border-gray-900 py-10 pb-24 md:pb-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-                
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full border border-brand-red bg-black overflow-hidden flex items-center justify-center">
                         <img src="logo.png" alt="Logo CT Morrão" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1268,7 +1422,6 @@
                         <span class="text-xs text-gray-500">Equipe Leandro Vilar • Itaguaí/RJ</span>
                     </div>
                 </div>
-
                 <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-400">
                     <a href="#sobre" class="hover:text-brand-red transition">Sobre</a>
                     <a href="#professor" class="hover:text-brand-red transition">Mestre Vilar</a>
@@ -1277,15 +1430,11 @@
                     <a href="#polos" class="hover:text-brand-red transition">Polos</a>
                     <a href="https://instagram.com/ctmorrao" target="_blank" class="hover:text-brand-red transition">Instagram</a>
                 </div>
-
-                <div class="text-xs text-gray-600">
-                    &copy; 2026 CT Morrão. Todos os direitos reservados.
-                </div>
+                <div class="text-xs text-gray-600">&copy; 2026 CT Morrão. Todos os direitos reservados.</div>
             </div>
         </div>
     </footer>
 
-    <!-- BOTÃO FLUTUANTE WHATSAPP (SÓ MOBILE) -->
     <a href="https://wa.me/5521983748088?text=Ol%C3%A1!%20Quero%20agendar%20uma%20aula%20experimental!"
        target="_blank" rel="noopener noreferrer"
        class="md:hidden fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center shadow-2xl shadow-green-900/60 active:scale-95 transition-transform"
@@ -1293,112 +1442,423 @@
         <i class="fa-brands fa-whatsapp text-3xl"></i>
     </a>
 
+    <button id="back-to-top" aria-label="Voltar ao topo">
+        <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="25" id="progress-circle"></circle></svg>
+        <i class="fa-solid fa-arrow-up relative z-10"></i>
+    </button>
+
     <script>
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        /* ============ PRELOADER ============ */
+        (function() {
+            const preloader = document.getElementById('preloader');
+            const fill = document.getElementById('preloader-fill');
+            const text = document.getElementById('preloader-text');
+            const messages = ['Carregando Experiência', 'Preparando Tatame', 'Forjando Campeões'];
+            let progress = 0;
+            let msgIdx = 0;
 
-        mobileMenuBtn.addEventListener('click', () => {
-            if (mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.remove('hidden');
-                setTimeout(() => {
-                    mobileMenu.classList.remove('opacity-0', '-translate-y-4');
-                    mobileMenu.classList.add('opacity-100', 'translate-y-0');
-                }, 10);
-                menuIcon.classList.remove('fa-bars');
-                menuIcon.classList.add('fa-xmark');
-            } else {
-                mobileMenu.classList.remove('opacity-100', 'translate-y-0');
-                mobileMenu.classList.add('opacity-0', '-translate-y-4');
-                setTimeout(() => {
-                    mobileMenu.classList.add('hidden');
-                }, 300);
-                menuIcon.classList.remove('fa-xmark');
-                menuIcon.classList.add('fa-bars');
+            const interval = setInterval(() => {
+                progress += Math.random() * 18 + 8;
+                if (progress >= 100) progress = 100;
+                fill.style.width = progress + '%';
+                
+                const newIdx = Math.min(Math.floor(progress / 40), messages.length - 1);
+                if (newIdx !== msgIdx) {
+                    msgIdx = newIdx;
+                    text.style.opacity = '0';
+                    setTimeout(() => { 
+                        text.textContent = messages[msgIdx]; 
+                        text.style.opacity = '1'; 
+                    }, 150);
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => preloader.classList.add('loaded'), 350);
+                }
+            }, 160);
+
+            setTimeout(() => preloader.classList.add('loaded'), 3500);
+        })();
+
+        /* ============ UTILITÁRIO: rAF throttle ============ */
+        function rafThrottle(fn) {
+            let scheduled = false;
+            return function(...args) {
+                if (scheduled) return;
+                scheduled = true;
+                requestAnimationFrame(() => {
+                    scheduled = false;
+                    fn.apply(this, args);
+                });
+            };
+        }
+
+        /* ============ CURSOR ============ */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            let rafId = null;
+
+            window.addEventListener('mousemove', (e) => {
+                mx = e.clientX; my = e.clientY;
+                dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+                if (!rafId) rafId = requestAnimationFrame(animateRing);
+            }, { passive: true });
+
+            function animateRing() {
+                rx += (mx - rx) * 0.18;
+                ry += (my - ry) * 0.18;
+                ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+                
+                if (Math.abs(mx - rx) > 0.5 || Math.abs(my - ry) > 0.5) {
+                    rafId = requestAnimationFrame(animateRing);
+                } else {
+                    rafId = null;
+                }
             }
-        });
 
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('opacity-100', 'translate-y-0');
-                mobileMenu.classList.add('opacity-0', '-translate-y-4');
-                setTimeout(() => {
-                    mobileMenu.classList.add('hidden');
-                }, 300);
-                menuIcon.classList.remove('fa-xmark');
-                menuIcon.classList.add('fa-bars');
+            const hoverTargets = 'a, button, .card-interactive, .tilt-card, .faq-btn, input, textarea';
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest(hoverTargets)) document.body.classList.add('cursor-hover');
             });
-        });
+            document.addEventListener('mouseout', (e) => {
+                if (e.target.closest(hoverTargets)) document.body.classList.remove('cursor-hover');
+            });
+        })();
 
-        const header = document.getElementById('main-header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('bg-brand-black/95', 'shadow-xl', 'py-2');
-                header.classList.remove('bg-brand-black/80', 'py-3');
-            } else {
-                header.classList.remove('bg-brand-black/95', 'shadow-xl', 'py-2');
-                header.classList.add('bg-brand-black/80', 'py-3');
+        /* ============ SCROLL PROGRESS + HEADER + BACK TO TOP ============ */
+        (function() {
+            const bar = document.getElementById('scroll-progress');
+            const header = document.getElementById('main-header');
+            const backBtn = document.getElementById('back-to-top');
+            const circle = document.getElementById('progress-circle');
+            const len = 2 * Math.PI * 25;
+            circle.style.strokeDasharray = len;
+
+            const update = rafThrottle(() => {
+                const h = document.documentElement;
+                const scrollTop = h.scrollTop;
+                const maxScroll = h.scrollHeight - h.clientHeight;
+                const pct = maxScroll > 0 ? (scrollTop / maxScroll) * 100 : 0;
+
+                bar.style.width = pct + '%';
+                circle.style.strokeDashoffset = len * (1 - (maxScroll > 0 ? scrollTop / maxScroll : 0));
+
+                if (scrollTop > 50) {
+                    header.classList.add('bg-brand-black/95', 'shadow-xl', 'py-2');
+                    header.classList.remove('bg-brand-black/80', 'py-3');
+                } else {
+                    header.classList.remove('bg-brand-black/95', 'shadow-xl', 'py-2');
+                    header.classList.add('bg-brand-black/80', 'py-3');
+                }
+
+                if (scrollTop > 500) backBtn.classList.add('visible');
+                else backBtn.classList.remove('visible');
+            });
+
+            window.addEventListener('scroll', update, { passive: true });
+            backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        })();
+
+        /* ============ MOBILE MENU ============ */
+        (function() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const links = document.querySelectorAll('.mobile-nav-link');
+
+            function close() {
+                menu.classList.remove('opacity-100', 'translate-y-0');
+                menu.classList.add('opacity-0', '-translate-y-4');
+                setTimeout(() => menu.classList.add('hidden'), 300);
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
             }
-        });
 
-        const observerOptions = {
-            root: null,
-            threshold: 0.12
-        };
-
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    const counters = entry.target.querySelectorAll('.counter');
-                    counters.forEach(counter => runCounter(counter));
+            btn.addEventListener('click', () => {
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        menu.classList.remove('opacity-0', '-translate-y-4');
+                        menu.classList.add('opacity-100', 'translate-y-0');
+                    });
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    close();
                 }
             });
-        }, observerOptions);
 
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-            revealObserver.observe(el);
-        });
+            links.forEach(l => l.addEventListener('click', close));
+        })();
 
+        /* ============ REVEAL — DRAMÁTICO + STAGGER ============ */
+        (function() {
+            if (!('IntersectionObserver' in window)) {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .split-text')
+                    .forEach(el => el.classList.add('is-visible'));
+                return;
+            }
+
+            // ===== STAGGER AUTOMÁTICO em grids =====
+            document.querySelectorAll('.grid').forEach(group => {
+                const children = Array.from(group.children).filter(c =>
+                    c.classList.contains('reveal') ||
+                    c.classList.contains('reveal-scale') ||
+                    c.classList.contains('reveal-left') ||
+                    c.classList.contains('reveal-right') ||
+                    c.classList.contains('reveal-blur')
+                );
+                children.forEach((child, i) => {
+                    if (!child.style.transitionDelay) {
+                        child.style.transitionDelay = (i * 130) + 'ms';
+                    }
+                });
+            });
+
+            // Stagger em listas de FAQ
+            document.querySelectorAll('#faq .space-y-4').forEach(list => {
+                const items = Array.from(list.children).filter(c =>
+                    c.classList.contains('reveal') ||
+                    c.classList.contains('reveal-scale')
+                );
+                items.forEach((item, i) => {
+                    if (!item.style.transitionDelay) {
+                        item.style.transitionDelay = (i * 150) + 'ms';
+                    }
+                });
+            });
+
+            // Stagger nos polos (flex wrap)
+            document.querySelectorAll('#polos .flex-wrap').forEach(list => {
+                const items = Array.from(list.children).filter(c =>
+                    c.classList.contains('reveal')
+                );
+                items.forEach((item, i) => {
+                    if (!item.style.transitionDelay) {
+                        item.style.transitionDelay = (i * 130) + 'ms';
+                    }
+                });
+            });
+
+            // ===== OBSERVER =====
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        entry.target.querySelectorAll('.counter').forEach(c => runCounter(c));
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.08,
+                rootMargin: '0px 0px -80px 0px'
+            });
+
+            // Começa a observar só depois que o preloader saiu
+            // Assim as animações do hero rodam visivelmente
+            setTimeout(() => {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .split-text')
+                    .forEach(el => observer.observe(el));
+            }, 900);
+        })();
+
+        /* ============ COUNTER ============ */
         function runCounter(counter) {
             if (counter.dataset.done) return;
             counter.dataset.done = "true";
             const target = +counter.getAttribute('data-target');
-            const duration = 2000;
-            const increment = target / (duration / 16);
-            let current = 0;
+            const duration = 1800;
+            const start = performance.now();
 
-            const updateCount = () => {
-                current += increment;
-                if (current < target) {
-                    counter.innerText = Math.ceil(current);
-                    requestAnimationFrame(updateCount);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-            updateCount();
+            function step(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                counter.innerText = Math.ceil(eased * target);
+                if (progress < 1) requestAnimationFrame(step);
+                else counter.innerText = target;
+            }
+            requestAnimationFrame(step);
         }
 
-        const faqButtons = document.querySelectorAll('.faq-btn');
-        faqButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const answer = btn.nextElementSibling;
-                const icon = btn.querySelector('.faq-icon');
-                
-                if (answer.classList.contains('open')) {
-                    answer.classList.remove('open');
-                    icon.style.transform = 'rotate(0deg)';
-                } else {
+        /* ============ FAQ ============ */
+        (function() {
+            document.querySelectorAll('.faq-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const answer = btn.nextElementSibling;
+                    const icon = btn.querySelector('.faq-icon');
+                    const isOpen = answer.classList.contains('open');
+
                     document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
                     document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = 'rotate(0deg)');
-                    
-                    answer.classList.add('open');
-                    icon.style.transform = 'rotate(180deg)';
-                }
+
+                    if (!isOpen) {
+                        answer.classList.add('open');
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
             });
-        });
+        })();
+
+        /* ============ SCROLLSPY ============ */
+        (function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const map = {};
+            navLinks.forEach(l => {
+                const href = l.getAttribute('href');
+                if (href && href.startsWith('#')) map[href.slice(1)] = l;
+            });
+
+            const spy = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        const link = map[entry.target.id];
+                        if (link) link.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.3, rootMargin: '-80px 0px -55% 0px' });
+
+            sections.forEach(s => spy.observe(s));
+        })();
+
+        /* ============ TILT 3D ============ */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                let rafId = null;
+                let rect = null;
+                let mouseX = 0, mouseY = 0;
+
+                function updateTilt() {
+                    rafId = null;
+                    if (!rect) return;
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+                    const rx = ((mouseY - cy) / cy) * -5;
+                    const ry = ((mouseX - cx) / cx) * 5;
+                    card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translate3d(0, -6px, 0)`;
+                }
+
+                card.addEventListener('mouseenter', () => {
+                    rect = card.getBoundingClientRect();
+                });
+
+                card.addEventListener('mousemove', (e) => {
+                    if (!rect) rect = card.getBoundingClientRect();
+                    mouseX = e.clientX - rect.left;
+                    mouseY = e.clientY - rect.top;
+                    if (!rafId) rafId = requestAnimationFrame(updateTilt);
+                }, { passive: true });
+
+                card.addEventListener('mouseleave', () => {
+                    rect = null;
+                    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                    card.style.transform = '';
+                });
+            });
+        })();
+
+        /* ============ BOTÕES MAGNÉTICOS ============ */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            document.querySelectorAll('.magnetic').forEach(el => {
+                let rafId = null;
+                let targetX = 0, targetY = 0;
+
+                function apply() {
+                    rafId = null;
+                    el.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) scale(1.03)`;
+                }
+
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    targetX = x * 0.2;
+                    targetY = y * 0.3;
+                    if (!rafId) rafId = requestAnimationFrame(apply);
+                }, { passive: true });
+
+                el.addEventListener('mouseleave', () => {
+                    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                    el.style.transform = '';
+                });
+            });
+        })();
+
+        /* ============ SPLIT TEXT ============ */
+        (function() {
+            document.querySelectorAll('[data-split]').forEach(el => {
+                const html = el.innerHTML;
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const walker = document.createTreeWalker(temp, NodeFilter.SHOW_TEXT);
+                const textNodes = [];
+                let n;
+                while ((n = walker.nextNode())) textNodes.push(n);
+
+                textNodes.forEach(node => {
+                    const words = node.textContent.split(/(\s+)/);
+                    const frag = document.createDocumentFragment();
+                    words.forEach(w => {
+                        if (w.trim() === '') {
+                            frag.appendChild(document.createTextNode(w));
+                        } else {
+                            const wrap = document.createElement('span');
+                            wrap.className = 'word';
+                            const inner = document.createElement('span');
+                            inner.textContent = w;
+                            wrap.appendChild(inner);
+                            frag.appendChild(wrap);
+                        }
+                    });
+                    node.parentNode.replaceChild(frag, node);
+                });
+
+                el.innerHTML = temp.innerHTML;
+
+                // Aplica delay por palavra
+                const words = el.querySelectorAll('.word > span');
+                words.forEach((w, i) => {
+                    w.style.transitionDelay = (i * 60) + 'ms';
+                });
+
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            el.classList.add('is-visible');
+                            obs.unobserve(el);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                obs.observe(el);
+            });
+        })();
+
+        /* ============ SMOOTH ANCHOR ============ */
+        (function() {
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const id = link.getAttribute('href');
+                    if (id.length > 1) {
+                        const target = document.querySelector(id);
+                        if (target) {
+                            e.preventDefault();
+                            const offset = 70;
+                            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                            window.scrollTo({ top, behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 </html>
