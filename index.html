@@ -266,9 +266,7 @@
             box-shadow: 0 20px 45px -15px rgba(220, 38, 38, 0.35);
         }
 
-        /* ============================================================
-           REVEAL — VERSÃO DRAMÁTICA E CONFIÁVEL
-        ============================================================ */
+        /* REVEAL */
         .reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur {
             opacity: 0;
             transition:
@@ -449,6 +447,132 @@
 
         @media (max-width: 1023px) {
             .hero-photo-ring { display: none; }
+        }
+
+        /* ============================================================
+           CORREÇÕES MOBILE — aplica apenas em telas pequenas ou touch
+        ============================================================ */
+        @media (hover: none), (max-width: 1023px) {
+
+            /* 1. REMOVE HOVERS "GRUDADOS" APÓS TOQUE */
+            .card-interactive:hover {
+                transform: none !important;
+                box-shadow: none !important;
+                border-color: inherit !important;
+            }
+            .tilt-card:hover { box-shadow: none !important; }
+            .btn-shine:hover::after {
+                transform: translate3d(-100%, 0, 0) rotate(30deg) !important;
+            }
+            .hover\:scale-105:hover { transform: none !important; }
+            .group:hover .group-hover\:rotate-6,
+            .group:hover .group-hover\:rotate-12,
+            .group:hover .group-hover\:rotate-45,
+            .group:hover .group-hover\:-rotate-12,
+            .group:hover .group-hover\:scale-105,
+            .group:hover .group-hover\:scale-110,
+            .group:hover .group-hover\:translate-x-2 { transform: none !important; }
+            .group:hover .group-hover\:text-brand-red { color: inherit !important; }
+            .group:hover .group-hover\:text-brand-gold { color: inherit !important; }
+
+            /* 2. EVITA OVERFLOW HORIZONTAL */
+            html, body { overflow-x: hidden !important; max-width: 100vw; }
+
+            /* 3. PRELOADER COMPACTO */
+            .preloader-logo { width: 68px; height: 68px; }
+            .preloader-logo span { font-size: 21px; }
+            .preloader-logo::before { inset: -6px; }
+            .preloader-bar { width: 150px; }
+            .preloader-text { font-size: 9px; letter-spacing: 0.3em; }
+            #preloader { gap: 16px; }
+
+            /* 4. MARQUEE MAIS RÁPIDA E MENOR */
+            .marquee-track {
+                animation-duration: 16s !important;
+                gap: 1.25rem !important;
+                padding-right: 1.25rem !important;
+            }
+            .marquee-track > span { font-size: 0.95rem !important; }
+            .marquee-track > i { font-size: 0.75rem !important; }
+
+            /* 5. REVEALS MAIS SUAVES */
+            .reveal { transform: translate3d(0, 35px, 0) !important; }
+            .reveal-left { transform: translate3d(-20px, 0, 0) !important; }
+            .reveal-right { transform: translate3d(20px, 0, 0) !important; }
+            .reveal-scale { transform: translate3d(0, 25px, 0) scale(0.95) !important; }
+            .reveal-blur { transform: translate3d(0, 25px, 0) !important; filter: blur(5px) !important; }
+
+            /* 6. DESLIGA ANIMAÇÕES INFINITAS NO MOBILE */
+            .animate-float { animation: none !important; }
+            .hero-photo-ring { display: none !important; }
+            .badge-glow::before { animation-duration: 4s; }
+
+            /* 7. BOTÕES FLUTUANTES */
+            #back-to-top {
+                bottom: 92px !important;
+                right: 16px !important;
+                width: 44px !important;
+                height: 44px !important;
+            }
+            #back-to-top svg { width: 44px !important; height: 44px !important; }
+
+            /* 8. BLUR MAIS LEVE */
+            .backdrop-blur-xl { backdrop-filter: blur(8px) !important; }
+            .backdrop-blur-md { backdrop-filter: blur(6px) !important; }
+
+            /* 9. SEÇÕES MAIS COMPACTAS */
+            section {
+                padding-top: 3rem !important;
+                padding-bottom: 3rem !important;
+            }
+
+            /* 10. SECTION TAG AJUSTADA */
+            .section-tag {
+                font-size: 10px !important;
+                letter-spacing: 0.15em !important;
+                gap: 8px !important;
+            }
+            .section-tag::before,
+            .section-tag::after { width: 16px !important; }
+
+            /* 11. ÁREAS DE TOQUE CONFORTÁVEIS */
+            .faq-btn {
+                padding-top: 1.1rem !important;
+                padding-bottom: 1.1rem !important;
+            }
+
+            /* 12. EVITA CORTE DE LETRAS DESCENDENTES */
+            .split-text .word { padding-bottom: 0.15em; }
+        }
+
+        /* CELULARES PEQUENOS */
+        @media (max-width: 400px) {
+            .preloader-logo { width: 60px; height: 60px; }
+            .preloader-logo span { font-size: 19px; }
+            .preloader-bar { width: 135px; }
+
+            .marquee-track {
+                animation-duration: 13s !important;
+                gap: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            .marquee-track > span { font-size: 0.85rem !important; }
+
+            section {
+                padding-top: 2.5rem !important;
+                padding-bottom: 2.5rem !important;
+            }
+
+            .section-tag { font-size: 9px !important; }
+        }
+
+        /* TABLETS EM PAISAGEM */
+        @media (min-width: 641px) and (max-width: 1023px) {
+            .marquee-track { animation-duration: 20s !important; }
+            section {
+                padding-top: 4rem !important;
+                padding-bottom: 4rem !important;
+            }
         }
     </style>
 </head>
@@ -1603,7 +1727,7 @@
                 return;
             }
 
-            // ===== STAGGER AUTOMÁTICO em grids =====
+            // Stagger automático em grids
             document.querySelectorAll('.grid').forEach(group => {
                 const children = Array.from(group.children).filter(c =>
                     c.classList.contains('reveal') ||
@@ -1619,7 +1743,7 @@
                 });
             });
 
-            // Stagger em listas de FAQ
+            // Stagger nos FAQs
             document.querySelectorAll('#faq .space-y-4').forEach(list => {
                 const items = Array.from(list.children).filter(c =>
                     c.classList.contains('reveal') ||
@@ -1632,11 +1756,9 @@
                 });
             });
 
-            // Stagger nos polos (flex wrap)
+            // Stagger nos polos
             document.querySelectorAll('#polos .flex-wrap').forEach(list => {
-                const items = Array.from(list.children).filter(c =>
-                    c.classList.contains('reveal')
-                );
+                const items = Array.from(list.children).filter(c => c.classList.contains('reveal'));
                 items.forEach((item, i) => {
                     if (!item.style.transitionDelay) {
                         item.style.transitionDelay = (i * 130) + 'ms';
@@ -1644,7 +1766,6 @@
                 });
             });
 
-            // ===== OBSERVER =====
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1658,8 +1779,6 @@
                 rootMargin: '0px 0px -80px 0px'
             });
 
-            // Começa a observar só depois que o preloader saiu
-            // Assim as animações do hero rodam visivelmente
             setTimeout(() => {
                 document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .split-text')
                     .forEach(el => observer.observe(el));
@@ -1824,7 +1943,6 @@
 
                 el.innerHTML = temp.innerHTML;
 
-                // Aplica delay por palavra
                 const words = el.querySelectorAll('.word > span');
                 words.forEach((w, i) => {
                     w.style.transitionDelay = (i * 60) + 'ms';
